@@ -39,12 +39,32 @@ init_db()
 def home():
 
     hero_images = [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=2070"
-    ]
+
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=2070",
+
+    "https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=80&w=2070",
+
+    "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687645-9c9e8f9d0c06?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687930-6b3f3f7e7b0f?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607688960-e095ff83135f?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687927-48c1c1f4e5d1?q=80&w=2070",
+
+    "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607688960-8f3e35d5b2c1?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687643-c7171b42498f?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600607687923-26c3f8c5e8d7?q=80&w=2070",
+    "https://images.unsplash.com/photo-1600047509782-20d39509f26d?q=80&w=2070"
+
+]
 
     hero = random.choice(hero_images)
 
