@@ -29,7 +29,7 @@ content="여기에코드">
 
 <header class="header">
 
-<div class="logo">GunJin SASH</div>
+<div class="logo" onclick="handleLogoClick()">GunJin SASH</div>
 
 <nav>
 
@@ -39,7 +39,7 @@ content="여기에코드">
 
 <a href="/admin_contacts">문의관리</a>
 
-<a href="/admin">관리자</a>
+<a href="/gunjin_admin_7137">관리자</a>
 
 </nav>
 
@@ -118,6 +118,26 @@ function handlePhoneClick(){
 
 </script>
 
+<script>
+
+let logoClickCount = 0;
+
+function handleLogoClick(){
+
+logoClickCount++;
+
+if(logoClickCount >= 5){
+
+window.location.href = "/gunjin_admin_7137";
+
+logoClickCount = 0;
+
+}
+
+}
+
+</script>
+
 <footer style="
 padding:40px;
 text-align:center;
@@ -135,11 +155,19 @@ margin-top:60px;
 </div>
 
 <div style="margin-top:5px;">
-전화: 010-0000-0000
+전화: 010-7137-2313
 </div>
 
 <div style="margin-top:5px; font-size:14px; color:#ccc;">
 © 건진창호 All rights reserved
+</div>
+
+<!-- 숨김 관리자 링크 -->
+<div style="margin-top:15px; font-size:12px;">
+<a href="/admin"
+style="color:#888; text-decoration:none;">
+관리자
+</a>
 </div>
 
 </footer>

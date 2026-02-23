@@ -173,7 +173,7 @@ def contact():
     return render_template("contact.html")
 
 # 관리자 로그인
-@app.route("/admin", methods=["GET", "POST"])
+@app.route("/gunjin_admin_7137", methods=["GET", "POST"])
 def admin():
 
     if request.method == "POST":
@@ -192,7 +192,7 @@ def admin():
 def admin_panel():
 
     if not session.get("admin"):
-        return redirect("/admin")
+        return redirect("/gunjin_admin_7137")
 
     if request.method == "POST":
 
@@ -243,7 +243,7 @@ def admin_panel():
 def set_main(id):
 
     if not session.get("admin"):
-        return redirect("/admin")
+        return redirect("/gunjin_admin_7137")
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -264,7 +264,7 @@ def set_main(id):
 def delete(id):
 
     if not session.get("admin"):
-        return redirect("/admin")
+        return redirect("/gunjin_admin_7137")
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -295,7 +295,7 @@ def delete(id):
 def edit_description(id):
 
     if not session.get("admin"):
-        return redirect("/admin")
+        return redirect("/gunjin_admin_7137")
 
     description = request.form.get("description", "")
 
@@ -325,7 +325,7 @@ def logout():
 def admin_contacts():
 
     if not session.get("admin"):
-        return redirect("/admin")
+        return redirect("/gunjin_admin_7137")
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
