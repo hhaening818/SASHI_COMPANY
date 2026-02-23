@@ -36,7 +36,17 @@ init_db()
 @app.route("/")
 def home():
 
-    return render_template("index.html")
+    conn = sqlite3.connect(DB_PATH)
+
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM portfolio ORDER BY id DESC LIMIT 5")
+
+    images = c.fetchall()
+
+    conn.close()
+
+    return render_template("index.html", images=images)
 
 # 시공사례
 @app.route("/portfolio")
@@ -77,34 +87,29 @@ def admin_panel():
 
     if request.method == "POST":
 
-        file = request.files["file"]
+        files = request.files.getlist("file")
 
-        if file:
+        for file in files:
 
-            filename = secure_filename(file.filename)
+            if file:
 
-            path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                filename = secure_filename(file.filename)
 
-            file.save(path)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
-            conn = sqlite3.connect(DB_PATH)
+                file.save(path)
 
-            c = conn.cursor()
+                conn = sqlite3.connect(DB_PATH)
 
-            c.execute("INSERT INTO portfolio (filename) VALUES (?)", (filename,))
+                c = conn.cursor()
 
-            conn.commit()
-            conn.close()
+                c.execute(
+                    "INSERT INTO portfolio (filename) VALUES (?)",
+                    (filename,)
+                )
 
-    conn = sqlite3.connect(DB_PATH)
-
-    c = conn.cursor()
-
-    c.execute("SELECT * FROM portfolio ORDER BY id DESC")
-
-    images = c.fetchall()
-
-    conn.close()
+                conn.commit()
+                conn.close()
 
     return render_template("admin.html", images=images)
 
