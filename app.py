@@ -1,7 +1,9 @@
 import os
 import sqlite3
+import random
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = "secret123"
@@ -36,17 +38,17 @@ init_db()
 @app.route("/")
 def home():
 
-    conn = sqlite3.connect(DB_PATH)
+    hero_images = [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=2070"
+    ]
 
-    c = conn.cursor()
+    hero = random.choice(hero_images)
 
-    c.execute("SELECT * FROM portfolio ORDER BY id DESC LIMIT 5")
-
-    images = c.fetchall()
-
-    conn.close()
-
-    return render_template("index.html", images=images)
+    return render_template("index.html", hero=hero)
 
 # 시공사례
 @app.route("/portfolio")
