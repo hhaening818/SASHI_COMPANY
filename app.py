@@ -61,7 +61,8 @@ def home():
     "https://images.unsplash.com/photo-1600047509782-20d39509f26d?q=80&w=2070"
 ]
 
-    hero = random.choice(hero_images)
+    # 안전 처리
+    hero = random.choice(hero_images) if hero_images else hero_images[0]
 
     return render_template("index.html", hero=hero)
 
