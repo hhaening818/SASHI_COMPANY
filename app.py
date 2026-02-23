@@ -424,13 +424,13 @@ def admin_contacts():
 
     # ⭐ 지역별 통계 가져오기 (전체 기준)
     c.execute("""
-    SELECT region, COUNT(*)
+    SELECT SUBSTR(region, 1, INSTR(region, ' ') - 1) AS sido, COUNT(*)
     FROM contact
     WHERE region IS NOT NULL AND region != ''
-    GROUP BY region
+    GROUP BY sido
     ORDER BY COUNT(*) DESC
     """)
-
+    
     region_stats = c.fetchall()
 
     conn.close()
