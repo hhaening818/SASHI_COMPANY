@@ -350,7 +350,7 @@ left:0;
 width:100%;
 height:100%;
 
-background:rgba(0,0,0,0.9);
+background:rgba(0,0,0,0.95);
 
 justify-content:center;
 align-items:center;
@@ -373,6 +373,59 @@ opacity:1;
 
 max-width:90%;
 max-height:90%;
+
+}
+
+/* 닫기 */
+.modal-close{
+
+position:absolute;
+top:20px;
+right:30px;
+
+color:white;
+font-size:40px;
+
+cursor:pointer;
+
+}
+
+/* 좌우 버튼 */
+.modal-prev,
+.modal-next{
+
+position:absolute;
+
+top:50%;
+
+color:white;
+
+font-size:50px;
+
+cursor:pointer;
+
+padding:20px;
+
+user-select:none;
+
+}
+
+.modal-prev{
+
+left:20px;
+
+}
+
+.modal-next{
+
+right:20px;
+
+}
+
+.modal-prev:hover,
+.modal-next:hover{
+
+color:#4a90a4;
 
 }
 

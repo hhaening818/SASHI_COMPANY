@@ -32,8 +32,8 @@
 
 {% set img_url = url_for('static', filename='uploads/' ~ img[1]) %}
 
-<div class="portfolio-card apartment"
-     onclick="openModal('{{ img_url }}')">
+<div class="portfolio-card"
+     onclick="openModal({{ loop.index0 | int }})">
 
 <img src="{{ img_url }}">
 
@@ -50,9 +50,71 @@
 </section>
 
 
-<!-- 모달 -->
-<div id="modal" class="modal" onclick="closeModal()">
+<!-- 모달 갤러리 -->
+<div id="modal" class="modal">
+
+<span class="modal-close" onclick="closeModal()">&times;</span>
+
+<span class="modal-prev" onclick="prevImage()">&#10094;</span>
+
 <img id="modal-img">
+
+<span class="modal-next" onclick="nextImage()">&#10095;</span>
+
 </div>
+
+<script>
+
+const imageDataElement = document.getElementById("image-data");
+
+let imageList = JSON.parse(imageDataElement.dataset.images);
+
+imageList = imageList.map(img => "/static/uploads/" + img);
+
+let currentIndex = 0;
+
+function openModal(index){
+
+currentIndex = index;
+
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+
+modal.style.display = "flex";
+modalImg.src = imageList[currentIndex];
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").style.display="none";
+
+}
+
+function nextImage(){
+
+currentIndex++;
+
+if(currentIndex >= imageList.length){
+currentIndex = 0;
+}
+
+document.getElementById("modal-img").src = imageList[currentIndex];
+
+}
+
+function prevImage(){
+
+currentIndex--;
+
+if(currentIndex < 0){
+currentIndex = imageList.length - 1;
+}
+
+document.getElementById("modal-img").src = imageList[currentIndex];
+
+}
+
+</script>
 
 {% endblock %}
