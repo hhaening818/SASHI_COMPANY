@@ -84,3 +84,37 @@ padding:10px 20px;
 text-decoration:none;
 margin-top:10px;
 }
+
+.slider{
+
+width:100%;
+height:500px;
+overflow:hidden;
+position:relative;
+
+}
+
+.slider img{
+
+width:100%;
+height:500px;
+object-fit:cover;
+position:absolute;
+animation:slide 20s infinite;
+
+}
+
+.slider img:nth-child(1){animation-delay:0s;}
+.slider img:nth-child(2){animation-delay:5s;}
+.slider img:nth-child(3){animation-delay:10s;}
+.slider img:nth-child(4){animation-delay:15s;}
+
+@keyframes slide{
+
+0%{opacity:0;}
+5%{opacity:1;}
+25%{opacity:1;}
+30%{opacity:0;}
+100%{opacity:0;}
+
+}
