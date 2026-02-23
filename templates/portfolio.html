@@ -71,7 +71,7 @@ data-images='[
 let imageList = [];
 let currentIndex = 0;
 
-document.addEventListener("DOMContentLoaded", function(){
+window.onload = function(){
 
 const imageDataElement = document.getElementById("image-data");
 
@@ -79,16 +79,24 @@ imageList = JSON.parse(imageDataElement.dataset.images);
 
 imageList = imageList.map(img => "/static/uploads/" + img);
 
-});
+}
 
 
 function openModal(index){
 
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+
+if(!modal || !modalImg){
+console.error("modal 또는 modal-img 없음");
+return;
+}
+
 currentIndex = parseInt(index);
 
-document.getElementById("modal").style.display="flex";
+modal.style.display="flex";
 
-document.getElementById("modal-img").src=imageList[currentIndex];
+modalImg.src=imageList[currentIndex];
 
 }
 
