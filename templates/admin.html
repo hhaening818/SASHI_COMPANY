@@ -39,7 +39,10 @@ style="width:300px; padding:8px;">
 
 <div style="margin-bottom:30px;">
 
-<img src="{{ img_url }}" width="250">
+<img src="{{ img_url }}"
+width="250"
+style="cursor:pointer"
+onclick="openAdminModal('{{ img_url }}')">
 
 <br>
 
@@ -68,5 +71,37 @@ style="width:250px; padding:5px;">
 {% endfor %}
 
 </div>
+
+<!-- 관리자 이미지 확대 모달 -->
+<div id="admin-modal" class="modal">
+
+<span class="modal-close" onclick="closeAdminModal()">&times;</span>
+
+<img id="admin-modal-img">
+
+</div>
+
+
+<script>
+
+function openAdminModal(src){
+
+const modal = document.getElementById("admin-modal");
+
+const modalImg = document.getElementById("admin-modal-img");
+
+modal.classList.add("show");
+
+modalImg.src = src;
+
+}
+
+function closeAdminModal(){
+
+document.getElementById("admin-modal").classList.remove("show");
+
+}
+
+</script>
 
 {% endblock %}
