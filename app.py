@@ -1,7 +1,7 @@
 import os
 import sqlite3
 import random
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 def get_kst_time():
