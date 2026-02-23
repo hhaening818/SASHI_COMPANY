@@ -81,32 +81,23 @@ imageList = imageList.map(img => "/static/uploads/" + img);
 
 }
 
-
 function openModal(index){
 
+currentIndex = index;
+
 const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modal-img");
 
-if(!modal || !modalImg){
-console.error("modal 또는 modal-img 없음");
-return;
-}
+modal.classList.add("show");
 
-currentIndex = parseInt(index);
-
-modal.style.display="flex";
-
-modalImg.src=imageList[currentIndex];
+document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
-
 
 function closeModal(){
 
-document.getElementById("modal").style.display="none";
+document.getElementById("modal").classList.remove("show");
 
 }
-
 
 function nextImage(){
 
@@ -120,7 +111,6 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
-
 function prevImage(){
 
 currentIndex--;
@@ -130,22 +120,6 @@ currentIndex=imageList.length-1;
 }
 
 document.getElementById("modal-img").src=imageList[currentIndex];
-
-}
-
-
-function filterSelection(category){
-
-let cards=document.getElementsByClassName("portfolio-card");
-
-for(let i=0;i<cards.length;i++){
-
-cards[i].style.display =
-(category=="all" || cards[i].classList.contains(category))
-? "block"
-: "none";
-
-}
 
 }
 
