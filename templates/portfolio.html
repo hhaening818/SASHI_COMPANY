@@ -68,17 +68,21 @@ data-images='[
 
 <script>
 
+let imageList = [];
+let currentIndex = 0;
+
 document.addEventListener("DOMContentLoaded", function(){
 
 const imageDataElement = document.getElementById("image-data");
 
-let imageList = JSON.parse(imageDataElement.dataset.images);
+imageList = JSON.parse(imageDataElement.dataset.images);
 
 imageList = imageList.map(img => "/static/uploads/" + img);
 
-let currentIndex = 0;
+});
 
-window.openModal = function(index){
+
+function openModal(index){
 
 currentIndex = parseInt(index);
 
@@ -88,13 +92,15 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
-window.closeModal = function(){
+
+function closeModal(){
 
 document.getElementById("modal").style.display="none";
 
 }
 
-window.nextImage = function(){
+
+function nextImage(){
 
 currentIndex++;
 
@@ -106,7 +112,8 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
-window.prevImage = function(){
+
+function prevImage(){
 
 currentIndex--;
 
@@ -118,7 +125,6 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
-});
 
 function filterSelection(category){
 
@@ -126,12 +132,10 @@ let cards=document.getElementsByClassName("portfolio-card");
 
 for(let i=0;i<cards.length;i++){
 
-if(category=="all"){
-cards[i].style.display="block";
-}else{
-cards[i].style.display=
-cards[i].classList.contains(category)?"block":"none";
-}
+cards[i].style.display =
+(category=="all" || cards[i].classList.contains(category))
+? "block"
+: "none";
 
 }
 
