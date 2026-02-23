@@ -34,14 +34,69 @@
 <!-- 문의 버튼 -->
 <div class="contact-buttons">
 
-<a href="tel:010-7137-2313" class="call-btn">
+<a href="#"
+   onclick="handlePhoneClick(); return false;"
+   class="call-btn">
+
 📞 전화문의
+
 </a>
 
-<a href="https://open.kakao.com/o/s4CBOShi" target="_blank" class="kakao-btn">
+<a href="#"
+   onclick="openKakaoChat(); return false;"
+   class="kakao-btn">
+
 💬 카카오톡 문의
+
 </a>
 
 </div>
+
+<script>
+
+function openKakaoChat(){
+
+    var kakaoUrl = "https://open.kakao.com/o/s4CBOShi";
+
+    var isMobile =
+        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if(isMobile){
+
+        window.location.href = kakaoUrl;
+
+    }else{
+
+        window.open(kakaoUrl, "_blank");
+
+    }
+
+}
+
+</script>
+
+<script>
+
+function handlePhoneClick(){
+
+    var phoneNumber = "010-7137-2313";
+
+    var isMobile =
+        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if(isMobile){
+
+        window.location.href = "tel:" + phoneNumber;
+
+    }else{
+
+        alert("전화문의: " + phoneNumber);
+
+    }
+
+}
+
+</script>
+
 </body>
 </html>
