@@ -55,6 +55,21 @@ def add_description_column():
 
 add_description_column()
 
+def add_is_main_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE portfolio ADD COLUMN is_main INTEGER DEFAULT 0")
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
+add_is_main_column()
+
 # 메인
 @app.route("/")
 def home():
@@ -154,6 +169,25 @@ def admin_panel():
         categories=CATEGORIES
     )
 
+@app.route("/set_main/<int:id>")
+def set_main(id):
+
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    # 기존 대표 해제
+    c.execute("UPDATE portfolio SET is_main=0")
+
+    # 새 대표 설정
+    c.execute("UPDATE portfolio SET is_main=1 WHERE id=?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin_panel")
 
 # 삭제
 @app.route("/delete/<int:id>")
