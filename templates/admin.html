@@ -37,13 +37,27 @@ style="width:300px; padding:8px;">
 
 {% set img_url = url_for('static', filename='uploads/' ~ img[2] ~ '/' ~ img[1]) %}
 
-<div>
+<div style="margin-bottom:30px;">
 
 <img src="{{ img_url }}" width="250">
 
 <br>
 
-{{ img[2] }}
+카테고리: {{ img[2] }}
+
+<br><br>
+
+<form method="POST" action="/edit_description/{{ img[0] }}">
+
+<input type="text"
+name="description"
+value="{{ img[3] if img[3] else '' }}"
+placeholder="설명 입력"
+style="width:250px; padding:5px;">
+
+<button type="submit">설명 저장</button>
+
+</form>
 
 <br>
 
