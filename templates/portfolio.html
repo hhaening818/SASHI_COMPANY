@@ -33,7 +33,8 @@
 {% set img_url = url_for('static', filename='uploads/' ~ img[1]) %}
 
 <div class="portfolio-card"
-     onclick="openModal({{ loop.index0 | int }})">
+     data-index="{{ loop.index0 }}"
+     onclick="openModal(this.dataset.index)">
 
 <img src="{{ img_url }}">
 
