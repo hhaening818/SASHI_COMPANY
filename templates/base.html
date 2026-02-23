@@ -2,7 +2,6 @@
 <html lang="ko">
 <head>
 
-<head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +23,6 @@ content="여기에코드">
 
 </head>
 
-</head>
 <body>
 
 <header class="header">
@@ -141,26 +139,6 @@ function handlePhoneClick(){
 
 </script>
 
-<script>
-
-let logoClickCount = 0;
-
-function handleLogoClick(){
-
-logoClickCount++;
-
-if(logoClickCount >= 5){
-
-window.location.href = "/gunjin_admin_7137";
-
-logoClickCount = 0;
-
-}
-
-}
-
-</script>
-
 <footer style="
 padding:40px;
 text-align:center;
@@ -187,13 +165,33 @@ margin-top:60px;
 
 <!-- 숨김 관리자 링크 -->
 <div style="margin-top:15px; font-size:12px;">
-<a href="/admin"
+<a href="/gunjin_admin_7137"
 style="color:#888; text-decoration:none;">
 관리자
 </a>
 </div>
 
 </footer>
+
+<script>
+
+let logoClickCount = 0;
+
+function handleLogoClick(){
+
+logoClickCount++;
+
+if(logoClickCount >= 5){
+
+window.location.href = "/gunjin_admin_7137";
+
+logoClickCount = 0;
+
+}
+
+}
+
+</script>
 
 </body>
 </html>
