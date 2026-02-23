@@ -107,3 +107,49 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
 font-weight:bold;
 
 }
+
+.hero-logo{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%, -50%);
+
+z-index:10;
+
+}
+
+.hero-logo img{
+
+width:400px;
+
+max-width:80%;
+
+}
+
+/* 히어로 */
+.hero{
+    height:500px;
+    background:url("/static/uploads/your_image.jpg") center/cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.hero-overlay{
+    background:rgba(0,0,0,0.5);
+    padding:40px;
+    color:white;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:40px;
+}
+
+.hero p{
+    margin:15px 0;
+}
