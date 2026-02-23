@@ -187,6 +187,26 @@ def delete(id):
 
     return redirect("/admin_panel")
 
+@app.route("/edit_description/<int:id>", methods=["POST"])
+def edit_description(id):
+
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    description = request.form.get("description", "")
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute(
+        "UPDATE portfolio SET description=? WHERE id=?",
+        (description, id)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin_panel")
 
 # 로그아웃
 @app.route("/logout")
@@ -195,7 +215,6 @@ def logout():
     session.clear()
 
     return redirect("/")
-
 
 # Railway 실행
 if __name__ == "__main__":
