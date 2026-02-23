@@ -70,6 +70,26 @@ def add_is_main_column():
 
 add_is_main_column()
 
+def init_contact_db():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS contact (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        phone TEXT,
+        message TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+init_contact_db()
+
 # 메인
 @app.route("/")
 def home():
@@ -94,7 +114,7 @@ def home():
 
         hero = [
 
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",                 
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
         "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
         "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
         "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
@@ -119,6 +139,30 @@ def portfolio():
 
     return render_template("portfolio.html", images=images)
 
+# 문의
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+
+    if request.method == "POST":
+
+        name = request.form["name"]
+        phone = request.form["phone"]
+        message = request.form["message"]
+
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute(
+            "INSERT INTO contact (name, phone, message) VALUES (?, ?, ?)",
+            (name, phone, message)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/contact?success=1")
+
+    return render_template("contact.html")
 
 # 관리자 로그인
 @app.route("/admin", methods=["GET", "POST"])
@@ -267,6 +311,24 @@ def logout():
     session.clear()
 
     return redirect("/")
+
+# 관리자 문의 관리
+@app.route("/admin_contacts")
+def admin_contacts():
+
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM contact ORDER BY id DESC")
+
+    contacts = c.fetchall()
+
+    conn.close()
+
+    return render_template("admin_contacts.html", contacts=contacts)
 
 # Railway 실행
 if __name__ == "__main__":
