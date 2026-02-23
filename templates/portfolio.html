@@ -21,6 +21,13 @@
 
 </div>
 
+<div id="image-data"
+data-images='[
+{% for img in images %}
+"{{ img[2] }}/{{ img[1] }}"{% if not loop.last %},{% endif %}
+{% endfor %}
+]'>
+</div>
 
 <div class="portfolio-grid">
 
@@ -47,15 +54,6 @@
 </section>
 
 
-<div id="image-data"
-data-images='[
-{% for img in images %}
-"{{ img[2] }}/{{ img[1] }}"{% if not loop.last %},{% endif %}
-{% endfor %}
-]'>
-</div>
-
-
 <div id="modal" class="modal">
 
 <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -70,6 +68,8 @@ data-images='[
 
 <script>
 
+document.addEventListener("DOMContentLoaded", function(){
+
 const imageDataElement = document.getElementById("image-data");
 
 let imageList = JSON.parse(imageDataElement.dataset.images);
@@ -78,8 +78,7 @@ imageList = imageList.map(img => "/static/uploads/" + img);
 
 let currentIndex = 0;
 
-
-function openModal(index){
+window.openModal = function(index){
 
 currentIndex = parseInt(index);
 
@@ -89,15 +88,13 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
-
-function closeModal(){
+window.closeModal = function(){
 
 document.getElementById("modal").style.display="none";
 
 }
 
-
-function nextImage(){
+window.nextImage = function(){
 
 currentIndex++;
 
@@ -109,8 +106,7 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
-
-function prevImage(){
+window.prevImage = function(){
 
 currentIndex--;
 
@@ -122,6 +118,7 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
+});
 
 function filterSelection(category){
 
@@ -130,21 +127,10 @@ let cards=document.getElementsByClassName("portfolio-card");
 for(let i=0;i<cards.length;i++){
 
 if(category=="all"){
-
 cards[i].style.display="block";
-
 }else{
-
-if(cards[i].classList.contains(category)){
-
-cards[i].style.display="block";
-
-}else{
-
-cards[i].style.display="none";
-
-}
-
+cards[i].style.display=
+cards[i].classList.contains(category)?"block":"none";
 }
 
 }
