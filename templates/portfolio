@@ -1,11 +1,25 @@
-<h1>시공사례</h1>
+{% extends "base.html" %}
 
-<a href="/admin">관리자</a>
+{% block content %}
 
-<hr>
+<section class="section">
+
+<h2>시공사례</h2>
+
+<div class="grid">
 
 {% for img in images %}
 
-<img src="{{ url_for('static', filename='uploads/' + img[1]) }}" width="400">
+<div class="work">
+
+<img src="{{ url_for('static', filename='uploads/' + img[1]) }}">
+
+</div>
 
 {% endfor %}
+
+</div>
+
+</section>
+
+{% endblock %}

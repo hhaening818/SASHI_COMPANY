@@ -1,91 +1,37 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GUNJIN SASH | 창호 전문 시공</title>
+{% extends "base.html" %}
 
-<style>
+{% block content %}
 
-body{
-margin:0;
-font-family:Arial;
-}
+<section class="hero">
 
-.header{
-display:flex;
-justify-content:space-between;
-padding:20px 40px;
-background:white;
-border-bottom:1px solid #ddd;
-}
+<div class="hero-text">
 
-.logo{
-font-size:24px;
-font-weight:bold;
-color:#2f7d32;
-}
-
-.menu a{
-margin-left:20px;
-text-decoration:none;
-color:black;
-}
-
-.hero{
-height:500px;
-background:linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070");
-background-size:cover;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-}
-
-.hero h1{
-font-size:40px;
-}
-
-.section{
-padding:60px;
-text-align:center;
-}
-
-.footer{
-background:#222;
-color:white;
-text-align:center;
-padding:20px;
-}
-
-</style>
-
-</head>
-<body>
-
-<div class="header">
-<div class="logo">GUNJIN SASH</div>
-
-<div class="menu">
-<a href="/">홈</a>
-<a href="/portfolio">시공사례</a>
-<a href="#">견적문의</a>
-</div>
-</div>
-
-<div class="hero">
 <h1>창호 시공 전문 기업</h1>
+
+<p>정확한 시공, 완벽한 품질</p>
+
+<a href="/portfolio" class="btn">시공사례 보기</a>
+
 </div>
 
-<div class="section">
-<h2>최고 품질의 창호 시공</h2>
-<p>아파트, 주택, 상가 전문 시공</p>
+</section>
+
+<section class="section">
+
+<h2>전문 시공 분야</h2>
+
+<div class="cards">
+
+<div class="card">아파트 창호</div>
+
+<div class="card">주택 창호</div>
+
+<div class="card">상가 창호</div>
+
+<div class="card">유리 시공</div>
+
 </div>
 
-<div class="footer">
-건진창호 © 2026
-</div>
+</section>
 
-</body>
-</html>
+{% endblock %}

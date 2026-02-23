@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>건진창호</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+
+<header class="header">
+
+<div class="logo">
+건진창호
+</div>
+
+<nav>
+
+<a href="/">홈</a>
+
+<a href="/portfolio">시공사례</a>
+
+<a href="/admin">관리자</a>
+
+</nav>
+
+</header>
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="footer">
+
+건진창호 © 2026
+
+</footer>
+
+</body>
+</html>
