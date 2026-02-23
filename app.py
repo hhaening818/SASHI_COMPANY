@@ -430,13 +430,24 @@ def admin_contacts():
     GROUP BY sido
     ORDER BY COUNT(*) DESC
     """)
-    
-    region_stats = c.fetchall()
+
+    region_stats_raw = c.fetchall()
 
     conn.close()
 
-    # ⭐ 현재 필터 기준 문의 수
     total_count = len(contacts)
+
+    # ⭐ 퍼센트 계산 추가
+    region_stats = []
+
+    for region_name, count in region_stats_raw:
+
+        if total_count > 0:
+            percent = round((count / total_count) * 100)
+        else:
+            percent = 0
+
+        region_stats.append((region_name, count, percent))
 
     return render_template(
         "admin_contacts.html",
