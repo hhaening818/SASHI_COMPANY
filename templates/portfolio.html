@@ -37,7 +37,7 @@ data-images='[
 
 <div class="portfolio-card {{ img[2] }}"
      data-index="{{ loop.index0 }}"
-     onclick="openModal(this.dataset.index)">
+     onclick="openModal({{ loop.index0 }})">
 
 <img src="{{ img_url }}">
 
