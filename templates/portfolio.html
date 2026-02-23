@@ -2,24 +2,47 @@
 
 {% block content %}
 
-<section class="section">
+<section class="portfolio-section">
 
-<h2>시공사례</h2>
+    <div class="portfolio-header">
 
-<div class="grid">
+        <h1>시공사례</h1>
 
-{% for img in images %}
+        <div class="portfolio-line"></div>
 
-<div class="work">
+        <p>건진창호의 실제 시공 사례입니다.</p>
 
-<img src="{{ url_for('static', filename='uploads/' + img[1]) }}">
+    </div>
 
-</div>
+    <div class="portfolio-grid">
 
-{% endfor %}
+    {% for img in images %}
 
-</div>
+    {% set img_url = url_for('static', filename='uploads/' ~ img[1]) %}
+
+    <div class="portfolio-card"
+        onclick="openModal('{{ img_url }}')">
+
+        <img src="{{ img_url }}">
+
+        <div class="portfolio-overlay">
+            <span>확대보기</span>
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    </div>
 
 </section>
+
+
+<!-- 확대 모달 -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+
+    <img id="modalImg">
+
+</div>
 
 {% endblock %}
