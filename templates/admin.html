@@ -58,8 +58,7 @@ onclick="openAdminModal('{{ img_url }}')">
 
 {% if img[5] %}
 <br>
-업로드 시간: {{ img[5][:16] }}
-{% endif %}
+업로드 시간: {{ img[5]|kst }}
 
 <br><br>
 

@@ -13,7 +13,9 @@
 이름: {{ contact[1] }}<br>
 전화번호: {{ contact[2] }}<br>
 내용: {{ contact[3] }}<br>
-날짜: {{ contact[4] }}
+날짜:
+{{ contact[4][0:4] }}년 {{ contact[4][5:7] }}월 {{ contact[4][8:10] }}일
+{{ contact[4][11:13] }}:{{ contact[4][14:16] }}
 
 </div>
 
