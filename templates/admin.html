@@ -1,19 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>관리자 페이지</title>
-</head>
-<body>
+<h2>관리자 패널</h2>
 
-<h1>시공사례 사진 업로드</h1>
+<a href="/logout">로그아웃</a>
+
+<hr>
 
 <form method="POST" enctype="multipart/form-data">
+
 <input type="file" name="file">
-<button type="submit">업로드</button>
+
+<button>업로드</button>
+
 </form>
 
-<br>
-<a href="/portfolio">시공사례 보기</a>
+<hr>
 
-</body>
-</html>
+{% for img in images %}
+
+<div>
+
+<img src="{{ url_for('static', filename='uploads/' + img[1]) }}" width="300">
+
+<a href="/delete/{{ img[0] }}">삭제</a>
+
+</div>
+
+{% endfor %}
