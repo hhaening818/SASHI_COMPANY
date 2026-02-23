@@ -60,6 +60,9 @@ function openKakaoChat(){
 
     var kakaoUrl = "https://open.kakao.com/o/s4CBOShi";
 
+    // DB에 기록
+    fetch("/kakao_click");
+
     var isMobile =
         /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 

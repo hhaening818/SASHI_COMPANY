@@ -116,6 +116,21 @@ def home():
 
     return render_template("index.html", hero=hero)
 
+@app.route("/kakao_click")
+def kakao_click():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute(
+        "INSERT INTO contact (name, phone, message) VALUES (?, ?, ?)",
+        ("카카오문의", "-", "카카오톡 문의 클릭")
+    )
+
+    conn.commit()
+    conn.close()
+
+    return "", 204
 
 # 시공사례
 @app.route("/portfolio")
