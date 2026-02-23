@@ -102,19 +102,28 @@ function handlePhoneClick(){
 
 function openModal(src){
 
-    var modal = document.getElementById("imageModal");
+const modal=document.getElementById("modal");
+const modalImg=document.getElementById("modal-img");
 
-    var modalImg = document.getElementById("modalImg");
+modal.style.display="flex";
 
-    modal.style.display = "flex";
+setTimeout(()=>{
+modal.classList.add("show");
+},10);
 
-    modalImg.src = src;
+modalImg.src=src;
 
 }
 
 function closeModal(){
 
-    document.getElementById("imageModal").style.display = "none";
+const modal=document.getElementById("modal");
+
+modal.classList.remove("show");
+
+setTimeout(()=>{
+modal.style.display="none";
+},200);
 
 }
 

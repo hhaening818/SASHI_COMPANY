@@ -4,45 +4,55 @@
 
 <section class="portfolio-section">
 
-    <div class="portfolio-header">
+<div class="portfolio-header">
 
-        <h1>시공사례</h1>
+<h1>시공사례</h1>
 
-        <div class="portfolio-line"></div>
+<div class="portfolio-line"></div>
 
-        <p>건진창호의 실제 시공 사례입니다.</p>
+<p>건진창호의 실제 시공 사례입니다.</p>
 
-    </div>
+</div>
 
-    <div class="portfolio-grid">
 
-    {% for img in images %}
+<!-- 카테고리 필터 -->
+<div class="portfolio-filter">
 
-    {% set img_url = url_for('static', filename='uploads/' ~ img[1]) %}
+<button onclick="filterSelection('all')" class="active">전체</button>
+<button onclick="filterSelection('apartment')">아파트</button>
+<button onclick="filterSelection('house')">주택</button>
+<button onclick="filterSelection('store')">상가</button>
 
-    <div class="portfolio-card"
-        onclick="openModal('{{ img_url }}')">
+</div>
 
-        <img src="{{ img_url }}">
 
-        <div class="portfolio-overlay">
-            <span>확대보기</span>
-        </div>
+<div class="portfolio-grid">
 
-    </div>
+{% for img in images %}
 
-    {% endfor %}
+{% set img_url = url_for('static', filename='uploads/' ~ img[1]) %}
 
-    </div>
+<div class="portfolio-card apartment"
+     onclick="openModal('{{ img_url }}')">
+
+<img src="{{ img_url }}">
+
+<div class="portfolio-overlay">
+<span>확대보기</span>
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
 
 </section>
 
 
-<!-- 확대 모달 -->
-<div id="imageModal" class="modal" onclick="closeModal()">
-
-    <img id="modalImg">
-
+<!-- 모달 -->
+<div id="modal" class="modal" onclick="closeModal()">
+<img id="modal-img">
 </div>
 
 {% endblock %}
