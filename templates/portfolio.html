@@ -5,20 +5,16 @@
 <section class="portfolio-section">
 
 <div class="portfolio-header">
-
 <h1>시공사례</h1>
-
 <div class="portfolio-line"></div>
-
-<p>건진창호의 실제 시공 사례입니다.</p>
-
+<p>건진창호 시공 사례</p>
 </div>
 
 
-<!-- 카테고리 필터 -->
+<!-- 필터 -->
 <div class="portfolio-filter">
 
-<button onclick="filterSelection('all')" class="active">전체</button>
+<button onclick="filterSelection('all')">전체</button>
 <button onclick="filterSelection('apartment')">아파트</button>
 <button onclick="filterSelection('house')">주택</button>
 <button onclick="filterSelection('store')">상가</button>
@@ -30,9 +26,9 @@
 
 {% for img in images %}
 
-{% set img_url = url_for('static', filename='uploads/' ~ img[1]) %}
+{% set img_url = url_for('static', filename='uploads/' ~ img[2] ~ '/' ~ img[1]) %}
 
-<div class="portfolio-card"
+<div class="portfolio-card {{ img.category }}"
      data-index="{{ loop.index0 }}"
      onclick="openModal(this.dataset.index)">
 
@@ -51,7 +47,15 @@
 </section>
 
 
-<!-- 모달 갤러리 -->
+<div id="image-data"
+data-images='[
+{% for img in images %}
+"{{ img[2] }}/{{ img[1] }}"{% if not loop.last %},{% endif %}
+{% endfor %}
+]'>
+</div>
+
+
 <div id="modal" class="modal">
 
 <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -64,25 +68,31 @@
 
 </div>
 
+
 <script>
 
-const imageDataElement = document.getElementById("image-data");
+const imageData = document.getElementById("image-data");
 
-let imageList = JSON.parse(imageDataElement.dataset.images);
+let categories = JSON.parse(imageData.dataset.images);
+let files = JSON.parse(imageData.dataset.files);
 
-imageList = imageList.map(img => "/static/uploads/" + img);
+let imageList = [];
+
+for(let i=0;i<files.length;i++){
+
+imageList.push("/static/uploads/" + categories[i] + "/" + files[i]);
+
+}
 
 let currentIndex = 0;
 
 function openModal(index){
 
-currentIndex = index;
+currentIndex = parseInt(index);
 
-const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modal-img");
+document.getElementById("modal").style.display="flex";
 
-modal.style.display = "flex";
-modalImg.src = imageList[currentIndex];
+document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
@@ -96,11 +106,11 @@ function nextImage(){
 
 currentIndex++;
 
-if(currentIndex >= imageList.length){
-currentIndex = 0;
+if(currentIndex>=imageList.length){
+currentIndex=0;
 }
 
-document.getElementById("modal-img").src = imageList[currentIndex];
+document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
@@ -108,11 +118,40 @@ function prevImage(){
 
 currentIndex--;
 
-if(currentIndex < 0){
-currentIndex = imageList.length - 1;
+if(currentIndex<0){
+currentIndex=imageList.length-1;
 }
 
-document.getElementById("modal-img").src = imageList[currentIndex];
+document.getElementById("modal-img").src=imageList[currentIndex];
+
+}
+
+
+function filterSelection(category){
+
+let cards=document.getElementsByClassName("portfolio-card");
+
+for(let i=0;i<cards.length;i++){
+
+if(category=="all"){
+
+cards[i].style.display="block";
+
+}else{
+
+if(cards[i].classList.contains(category)){
+
+cards[i].style.display="block";
+
+}else{
+
+cards[i].style.display="none";
+
+}
+
+}
+
+}
 
 }
 

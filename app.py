@@ -4,7 +4,6 @@ import random
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
 app.secret_key = "secret123"
 
@@ -13,19 +12,25 @@ DB_PATH = "database.db"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# 카테고리
+CATEGORIES = ["apartment", "house", "store"]
 
-# DB 초기화
+# 폴더 생성
+for category in CATEGORIES:
+    os.makedirs(os.path.join(UPLOAD_FOLDER, category), exist_ok=True)
+
+
+# DB 초기화 (카테고리 포함)
 def init_db():
 
     conn = sqlite3.connect(DB_PATH)
-
     c = conn.cursor()
 
     c.execute("""
         CREATE TABLE IF NOT EXISTS portfolio (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            filename TEXT
+            filename TEXT,
+            category TEXT
         )
     """)
 
@@ -34,44 +39,28 @@ def init_db():
 
 init_db()
 
+
 # 메인
 @app.route("/")
 def home():
 
     hero_images = [
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687645-9c9e8f9d0c06?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687930-6b3f3f7e7b0f?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607688960-e095ff83135f?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687927-48c1c1f4e5d1?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607688960-8f3e35d5b2c1?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687643-c7171b42498f?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600607687923-26c3f8c5e8d7?q=80&w=2070",
-    "https://images.unsplash.com/photo-1600047509782-20d39509f26d?q=80&w=2070"
-]
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
+        "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
+    ]
 
-    # 안전 처리
-    hero = random.choice(hero_images) if hero_images else hero_images[0]
+    hero = random.choice(hero_images)
 
     return render_template("index.html", hero=hero)
+
 
 # 시공사례
 @app.route("/portfolio")
 def portfolio():
 
     conn = sqlite3.connect(DB_PATH)
-
     c = conn.cursor()
 
     c.execute("SELECT * FROM portfolio ORDER BY id DESC")
@@ -81,6 +70,7 @@ def portfolio():
     conn.close()
 
     return render_template("portfolio.html", images=images)
+
 
 # 관리자 로그인
 @app.route("/admin", methods=["GET", "POST"])
@@ -96,6 +86,7 @@ def admin():
 
     return render_template("admin_login.html")
 
+
 # 관리자 패널
 @app.route("/admin_panel", methods=["GET", "POST"])
 def admin_panel():
@@ -105,31 +96,48 @@ def admin_panel():
 
     if request.method == "POST":
 
-        files = request.files.getlist("file")
+        file = request.files["file"]
+        category = request.form["category"]
 
-        for file in files:
+        if file and category:
 
-            if file:
+            filename = secure_filename(file.filename)
 
-                filename = secure_filename(file.filename)
+            save_path = os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                category,
+                filename
+            )
 
-                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(save_path)
 
-                file.save(path)
+            conn = sqlite3.connect(DB_PATH)
+            c = conn.cursor()
 
-                conn = sqlite3.connect(DB_PATH)
+            c.execute(
+                "INSERT INTO portfolio (filename, category) VALUES (?, ?)",
+                (filename, category)
+            )
 
-                c = conn.cursor()
+            conn.commit()
+            conn.close()
 
-                c.execute(
-                    "INSERT INTO portfolio (filename) VALUES (?)",
-                    (filename,)
-                )
+    # 이미지 목록 불러오기
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
 
-                conn.commit()
-                conn.close()
+    c.execute("SELECT * FROM portfolio ORDER BY id DESC")
 
-    return render_template("admin.html", images=images)
+    images = c.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "admin.html",
+        images=images,
+        categories=CATEGORIES
+    )
+
 
 # 삭제
 @app.route("/delete/<int:id>")
@@ -139,16 +147,19 @@ def delete(id):
         return redirect("/admin")
 
     conn = sqlite3.connect(DB_PATH)
-
     c = conn.cursor()
 
-    c.execute("SELECT filename FROM portfolio WHERE id=?", (id,))
+    c.execute("SELECT filename, category FROM portfolio WHERE id=?", (id,))
 
     file = c.fetchone()
 
     if file:
 
-        path = os.path.join(app.config["UPLOAD_FOLDER"], file[0])
+        path = os.path.join(
+            app.config["UPLOAD_FOLDER"],
+            file[1],
+            file[0]
+        )
 
         if os.path.exists(path):
             os.remove(path)
@@ -160,6 +171,7 @@ def delete(id):
 
     return redirect("/admin_panel")
 
+
 # 로그아웃
 @app.route("/logout")
 def logout():
@@ -168,7 +180,8 @@ def logout():
 
     return redirect("/")
 
-# Railway용 실행
+
+# Railway 실행
 if __name__ == "__main__":
 
     port = int(os.environ.get("PORT", 5000))

@@ -1,27 +1,50 @@
-<h2>관리자 패널</h2>
+{% extends "base.html" %}
 
-<a href="/logout">로그아웃</a>
+{% block content %}
 
-<hr>
+<h1 style="padding:40px;">관리자 업로드</h1>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" style="padding:40px;">
 
-<input type="file" name="file" multiple>
+<input type="file" name="file" required>
 
-<button>업로드</button>
+<select name="category">
+
+{% for category in categories %}
+
+<option value="{{ category }}">{{ category }}</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">업로드</button>
 
 </form>
 
-<hr>
+
+<div style="display:flex; flex-wrap:wrap; gap:20px; padding:40px;">
 
 {% for img in images %}
 
+{% set img_url = url_for('static', filename='uploads/' ~ img[2] ~ '/' ~ img[1]) %}
+
 <div>
 
-<img src="{{ url_for('static', filename='uploads/' + img[1]) }}" width="300">
+<img src="{{ img_url }}" width="250">
+
+<br>
+
+{{ img[2] }}
+
+<br>
 
 <a href="/delete/{{ img[0] }}">삭제</a>
 
 </div>
 
 {% endfor %}
+
+</div>
+
+{% endblock %}
