@@ -2,13 +2,41 @@
 
 {% block content %}
 
-<section style="padding:80px 20px; max-width:600px; margin:auto;">
+<section class="portfolio-section">
+
+<div class="portfolio-header">
 
 <h1>문의하기</h1>
 
+<div class="portfolio-line"></div>
+
+<p>문의사항을 남겨주시면 빠르게 연락드리겠습니다.</p>
+
+</div>
+
+
+<div style="
+max-width:600px;
+margin:auto;
+background:white;
+padding:30px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+">
+
 {% if request.args.get('success') %}
-<p style="color:green;">문의가 정상적으로 접수되었습니다.</p>
+
+<div style="
+background:#e8f5e9;
+color:#2e7d32;
+padding:12px;
+margin-bottom:20px;
+text-align:center;
+">
+문의가 정상적으로 접수되었습니다.
+</div>
+
 {% endif %}
+
 
 <form method="POST">
 
@@ -16,28 +44,55 @@
 name="name"
 placeholder="이름"
 required
-style="width:100%; padding:10px; margin-bottom:10px;">
+style="
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ddd;
+">
 
 <input type="text"
 name="phone"
 placeholder="전화번호"
 required
-style="width:100%; padding:10px; margin-bottom:10px;">
+style="
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ddd;
+">
 
 <textarea
 name="message"
 placeholder="문의 내용"
 required
-style="width:100%; padding:10px; height:150px; margin-bottom:10px;"></textarea>
+style="
+width:100%;
+padding:12px;
+height:150px;
+margin-bottom:15px;
+border:1px solid #ddd;
+resize:none;
+"></textarea>
 
 <button type="submit"
-style="padding:12px 20px; background:#2f7d32; color:white; border:none;">
+style="
+width:100%;
+padding:14px;
+background:#1c2730;
+color:white;
+border:none;
+font-size:16px;
+cursor:pointer;
+">
 
 문의 보내기
 
 </button>
 
 </form>
+
+</div>
 
 </section>
 
