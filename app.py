@@ -27,11 +27,12 @@ def init_db():
     c = conn.cursor()
 
     c.execute("""
-        CREATE TABLE IF NOT EXISTS portfolio (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            filename TEXT,
-            category TEXT
-        )
+    CREATE TABLE IF NOT EXISTS portfolio (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename TEXT,
+        category TEXT,
+        description TEXT
+    )
     """)
 
     conn.commit()
@@ -98,6 +99,7 @@ def admin_panel():
 
         file = request.files["file"]
         category = request.form["category"]
+        description = request.form["description"]
 
         if file and category:
 
@@ -115,8 +117,8 @@ def admin_panel():
             c = conn.cursor()
 
             c.execute(
-                "INSERT INTO portfolio (filename, category) VALUES (?, ?)",
-                (filename, category)
+            "INSERT INTO portfolio (filename, category, description) VALUES (?, ?, ?)",
+            (filename, category, description)
             )
 
             conn.commit()
