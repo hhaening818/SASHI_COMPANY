@@ -1,5 +1,9 @@
 <h2>관리자 로그인</h2>
 
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
 <form method="POST">
 
 아이디: <input name="id"><br><br>

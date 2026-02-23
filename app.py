@@ -176,16 +176,38 @@ def contact():
 @app.route("/gunjin_admin_7137", methods=["GET", "POST"])
 def admin():
 
+    if "login_attempts" not in session:
+        session["login_attempts"] = 0
+
+    error = None
+
     if request.method == "POST":
 
-        if request.form["id"] == "gunjin7137" and request.form["pw"] == "GunJin!7137":
+        # 5회 이상 실패 시 차단
+        if session["login_attempts"] >= 5:
+            error = "로그인 5회 실패. 브라우저를 새로고침 후 다시 시도하세요."
+            return render_template("admin_login.html", error=error)
+
+        admin_id = "gunjin7137"
+        admin_pw = "GunJin!7137"
+
+        if request.form["id"] == admin_id and request.form["pw"] == admin_pw:
 
             session["admin"] = True
 
+            session["login_attempts"] = 0  # 성공 시 초기화
+
             return redirect("/admin_panel")
 
-    return render_template("admin_login.html")
+        else:
 
+            session["login_attempts"] += 1
+
+            remaining = 5 - session["login_attempts"]
+
+            error = f"로그인 실패. 남은 시도 횟수: {remaining}"
+
+    return render_template("admin_login.html", error=error)
 
 # 관리자 패널
 @app.route("/admin_panel", methods=["GET", "POST"])
