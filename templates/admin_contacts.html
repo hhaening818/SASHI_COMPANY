@@ -7,7 +7,14 @@
 <div style="padding:40px;">
 
 <!-- ⭐ 여기로 이동 (for문 위) -->
-<form method="GET" action="/admin_contacts" style="margin-bottom:20px;">
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+">
+
+<form method="GET" action="/admin_contacts">
 
 <select name="region"
 onchange="this.form.submit()"
@@ -84,6 +91,31 @@ style="padding:8px; border:1px solid #ccc;">
 
 </form>
 
+<div style="font-weight:bold;">
+총 문의: {{ total_count }}건
+</div>
+
+<div style="
+margin-top:20px;
+padding:15px;
+background:#f5f5f5;
+">
+
+<div style="font-weight:bold; margin-bottom:10px;">
+지역별 문의 수
+</div>
+
+{% for stat in region_stats %}
+
+<div>
+{{ stat[0] }} : {{ stat[1] }}건
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
 
 <!-- ⭐ 문의 목록 -->
 {% for contact in contacts %}

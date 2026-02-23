@@ -411,6 +411,7 @@ def admin_contacts():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
+    # ⭐ 문의 목록 가져오기 (필터 적용)
     if region:
         c.execute(
         "SELECT * FROM contact WHERE region LIKE ? ORDER BY id DESC",
@@ -421,9 +422,28 @@ def admin_contacts():
 
     contacts = c.fetchall()
 
+    # ⭐ 지역별 통계 가져오기 (전체 기준)
+    c.execute("""
+    SELECT region, COUNT(*)
+    FROM contact
+    WHERE region IS NOT NULL AND region != ''
+    GROUP BY region
+    ORDER BY COUNT(*) DESC
+    """)
+
+    region_stats = c.fetchall()
+
     conn.close()
 
-    return render_template("admin_contacts.html", contacts=contacts)
+    # ⭐ 현재 필터 기준 문의 수
+    total_count = len(contacts)
+
+    return render_template(
+        "admin_contacts.html",
+        contacts=contacts,
+        total_count=total_count,
+        region_stats=region_stats
+    )
 
 # Railway 실행
 if __name__ == "__main__":
