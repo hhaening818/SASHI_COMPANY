@@ -28,7 +28,7 @@
 
 {% set img_url = url_for('static', filename='uploads/' ~ img[2] ~ '/' ~ img[1]) %}
 
-<div class="portfolio-card {{ img.category }}"
+<div class="portfolio-card {{ img[2] }}"
      data-index="{{ loop.index0 }}"
      onclick="openModal(this.dataset.index)">
 
@@ -68,23 +68,16 @@ data-images='[
 
 </div>
 
-
 <script>
 
-const imageData = document.getElementById("image-data");
+const imageDataElement = document.getElementById("image-data");
 
-let categories = JSON.parse(imageData.dataset.images);
-let files = JSON.parse(imageData.dataset.files);
+let imageList = JSON.parse(imageDataElement.dataset.images);
 
-let imageList = [];
-
-for(let i=0;i<files.length;i++){
-
-imageList.push("/static/uploads/" + categories[i] + "/" + files[i]);
-
-}
+imageList = imageList.map(img => "/static/uploads/" + img);
 
 let currentIndex = 0;
+
 
 function openModal(index){
 
@@ -96,11 +89,13 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
+
 function closeModal(){
 
 document.getElementById("modal").style.display="none";
 
 }
+
 
 function nextImage(){
 
@@ -113,6 +108,7 @@ currentIndex=0;
 document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
+
 
 function prevImage(){
 
