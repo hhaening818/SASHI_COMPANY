@@ -107,13 +107,31 @@ background:#f5f5f5;
 
 {% for stat in region_stats %}
 
-<div>
-{{ stat[0] }} : {{ stat[1] }}건 ({{ stat[2] }}%)
+<div style="margin-bottom:8px;">
+
+<div style="display:flex; justify-content:space-between;">
+<span>{{ stat[0] }}</span>
+<span>{{ stat[1] }}건 ({{ stat[2] }}%)</span>
+</div>
+
+<div style="
+background:#ddd;
+height:10px;
+margin-top:4px;
+">
+
+<div style="
+background:#2f7d32;
+height:10px;
+width:{{ stat[2] }}%;
+">
+</div>
+
+</div>
+
 </div>
 
 {% endfor %}
-
-</div>
 
 </div>
 
