@@ -74,15 +74,33 @@ add_is_main_column()
 @app.route("/")
 def home():
 
-    hero_images = [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("SELECT filename, category FROM portfolio WHERE is_main=1 LIMIT 1")
+
+    result = c.fetchone()
+
+    conn.close()
+
+    if result:
+
+        hero = url_for(
+            "static",
+            filename="uploads/" + result[1] + "/" + result[0]
+        )
+
+    else:
+
+        hero = [
+
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",                 
         "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
         "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
         "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
-    ]
-
-    hero = random.choice(hero_images)
-
+    
+        ]
+    
     return render_template("index.html", hero=hero)
 
 
