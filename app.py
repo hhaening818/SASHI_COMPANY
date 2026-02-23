@@ -112,15 +112,8 @@ def home():
 
     else:
 
-        hero = [
+        hero = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070"
 
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070",
-        "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070",
-    
-        ]
-    
     return render_template("index.html", hero=hero)
 
 
