@@ -79,7 +79,10 @@ imageList = JSON.parse(imageDataElement.dataset.images);
 
 imageList = imageList.map(img => "/static/uploads/" + img);
 
+filterSelection("all"); // 추가
+
 }
+
 
 function openModal(index){
 
@@ -93,11 +96,13 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
+
 function closeModal(){
 
 document.getElementById("modal").classList.remove("show");
 
 }
+
 
 function nextImage(){
 
@@ -111,6 +116,7 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 
 }
 
+
 function prevImage(){
 
 currentIndex--;
@@ -120,6 +126,28 @@ currentIndex=imageList.length-1;
 }
 
 document.getElementById("modal-img").src=imageList[currentIndex];
+
+}
+
+
+/* ✅ 이거 추가 */
+function filterSelection(category){
+
+let cards=document.getElementsByClassName("portfolio-card");
+
+for(let i=0;i<cards.length;i++){
+
+if(category=="all" || cards[i].classList.contains(category)){
+
+cards[i].style.display="";
+
+}else{
+
+cards[i].style.display="none";
+
+}
+
+}
 
 }
 
