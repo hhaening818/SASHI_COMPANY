@@ -12,6 +12,11 @@
 
 이름: {{ contact[1] }}<br>
 전화번호: {{ contact[2] }}<br>
+
+{% if contact[5] %}
+지역: {{ contact[5] }}<br>
+{% endif %}
+
 내용: {{ contact[3] }}<br>
 날짜: {{ contact[4]|kst }}
 

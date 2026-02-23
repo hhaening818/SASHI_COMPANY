@@ -88,6 +88,21 @@ def add_created_at_column():
 
 add_created_at_column()
 
+def add_region_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE contact ADD COLUMN region TEXT")
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
+add_region_column()
+
 def init_contact_db():
 
     conn = sqlite3.connect(DB_PATH)
@@ -190,21 +205,19 @@ def contact():
         name = request.form["name"]
         phone = request.form["phone"]
 
-        # ⭐ 여기 추가
         sido = request.form["sido"]
         sigungu = request.form["sigungu"]
 
-        message = request.form["message"]
+        region = f"{sido} {sigungu}"
 
-        # ⭐ 지역 포함 메시지로 변경
-        full_message = f"[지역: {sido} {sigungu}]\n{message}"
+        message = request.form["message"]
 
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
 
         c.execute(
-        "INSERT INTO contact (name, phone, message) VALUES (?, ?, ?)",
-        (name, phone, full_message)
+        "INSERT INTO contact (name, phone, region, message) VALUES (?, ?, ?, ?)",
+        (name, phone, region, message)
         )
 
         conn.commit()
