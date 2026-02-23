@@ -60,15 +60,13 @@ animation:slide 20s infinite;
 
 position:fixed;
 
-right:20px;
+right:0px;
 
-bottom:20px;
+bottom:80px;
 
 display:flex;
 
 flex-direction:column;
-
-gap:10px;
 
 z-index:999;
 
@@ -76,35 +74,75 @@ z-index:999;
 
 .call-btn{
 
-background:#2f7d32;
+background:#1f2a30;
+color:#e8f0f2;
+border-left:4px solid #4a6b7a;
 
-color:white;
+display:block;
 
-padding:12px 18px;
+width:160px;
+
+padding:14px 18px;
 
 text-decoration:none;
 
-border-radius:30px;
+font-size:14px;
 
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
+font-weight:600;
+
+letter-spacing:0.5px;
+
+border-radius:0px;
+
+transition:all 0.2s ease;
+
+box-shadow:none;
+
+}
+
+.call-btn:hover{
+
+background:#26343b;
+
+border-left:4px solid #7fa9bd;
+
+color:white;
 
 }
 
 .kakao-btn{
 
-background:#FEE500;
+background:#2a2a2a;
+color:#e0e0e0;
+border-left:4px solid #888;
 
-color:black;
-
-padding:12px 18px;
+padding:14px 18px;
 
 text-decoration:none;
 
-border-radius:30px;
+font-size:14px;
 
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
+font-weight:600;
+
+letter-spacing:0.5px;
+
+border-radius:0px;
+
+transition:all 0.2s ease;
+
+box-shadow:none;
 
 font-weight:bold;
+
+}
+
+.kakao-btn:hover{
+
+background:#333;
+
+border-left:4px solid #bbb;
+
+color:white;
 
 }
 
