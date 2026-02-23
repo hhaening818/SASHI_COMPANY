@@ -178,7 +178,7 @@ def admin():
 
     if request.method == "POST":
 
-        if request.form["id"] == "admin" and request.form["pw"] == "1234":
+        if request.form["id"] == "gunjin7137" and request.form["pw"] == "GunJin!7137":
 
             session["admin"] = True
 
