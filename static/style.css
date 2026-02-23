@@ -438,6 +438,16 @@ box-sizing:border-box;
 
 }
 
+.contact-form select{
+
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ddd;
+box-sizing:border-box;
+
+}
+
 /* 모바일 최적화 */
 @media (max-width:768px){
 

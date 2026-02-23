@@ -189,16 +189,22 @@ def contact():
 
         name = request.form["name"]
         phone = request.form["phone"]
+
+        # ⭐ 여기 추가
+        sido = request.form["sido"]
+        sigungu = request.form["sigungu"]
+
         message = request.form["message"]
+
+        # ⭐ 지역 포함 메시지로 변경
+        full_message = f"[지역: {sido} {sigungu}]\n{message}"
 
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
 
-        kst_time = datetime.utcnow() + timedelta(hours=9)
-
         c.execute(
-        "INSERT INTO contact (name, phone, message, created_at) VALUES (?, ?, ?, ?)",
-        (name, phone, message, kst_time)
+        "INSERT INTO contact (name, phone, message) VALUES (?, ?, ?)",
+        (name, phone, full_message)
         )
 
         conn.commit()
