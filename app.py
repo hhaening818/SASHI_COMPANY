@@ -3,6 +3,9 @@ import sqlite3
 import random
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
+def get_kst_time():
+    return datetime.utcnow() + timedelta(hours=9)
 
 app = Flask(__name__)
 app.secret_key = "secret123"
@@ -69,6 +72,21 @@ def add_is_main_column():
     conn.close()
 
 add_is_main_column()
+
+def add_created_at_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE portfolio ADD COLUMN created_at DATETIME")
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
+add_created_at_column()
 
 def init_contact_db():
 
@@ -160,9 +178,11 @@ def contact():
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
 
+        kst_time = datetime.utcnow() + timedelta(hours=9)
+
         c.execute(
-            "INSERT INTO contact (name, phone, message) VALUES (?, ?, ?)",
-            (name, phone, message)
+        "INSERT INTO contact (name, phone, message, created_at) VALUES (?, ?, ?, ?)",
+        (name, phone, message, kst_time)
         )
 
         conn.commit()
@@ -237,9 +257,11 @@ def admin_panel():
             conn = sqlite3.connect(DB_PATH)
             c = conn.cursor()
 
+            kst_time = get_kst_time()
+
             c.execute(
-            "INSERT INTO portfolio (filename, category, description) VALUES (?, ?, ?)",
-            (filename, category, description)
+            "INSERT INTO portfolio (filename, category, description, created_at) VALUES (?, ?, ?, ?)",
+            (filename, category, description, kst_time)
             )
 
             conn.commit()

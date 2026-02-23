@@ -56,6 +56,11 @@ onclick="openAdminModal('{{ img_url }}')">
 
 카테고리: {{ img[2] }}
 
+{% if img[5] %}
+<br>
+업로드 시간: {{ img[5][:16] }}
+{% endif %}
+
 <br><br>
 
 <form method="POST" action="/edit_description/{{ img[0] }}">
