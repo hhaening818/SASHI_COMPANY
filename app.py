@@ -134,6 +134,22 @@ def home():
 
     return render_template("index.html", hero=hero)
 
+@app.template_filter("kst")
+def format_kst(datetime_str):
+
+    if not datetime_str:
+        return ""
+
+    dt = str(datetime_str)
+
+    year = dt[0:4]
+    month = dt[5:7]
+    day = dt[8:10]
+    hour = dt[11:13]
+    minute = dt[14:16]
+
+    return f"{year}년 {month}월 {day}일 {hour}:{minute}"
+
 @app.route("/kakao_click")
 def kakao_click():
 

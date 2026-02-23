@@ -21,6 +21,7 @@ margin:auto;
 background:white;
 padding:30px;
 box-shadow:0 4px 12px rgba(0,0,0,0.08);
+box-sizing:border-box;
 ">
 
 {% if request.args.get('success') %}
@@ -38,7 +39,7 @@ text-align:center;
 {% endif %}
 
 
-<form method="POST">
+<form method="POST" class="contact-form">
 
 <input type="text"
 name="name"
@@ -49,6 +50,7 @@ width:100%;
 padding:12px;
 margin-bottom:15px;
 border:1px solid #ddd;
+box-sizing:border-box;
 ">
 
 <input type="text"
@@ -73,6 +75,7 @@ height:150px;
 margin-bottom:15px;
 border:1px solid #ddd;
 resize:none;
+box-sizing:border-box;
 "></textarea>
 
 <button type="submit"
@@ -84,6 +87,7 @@ color:white;
 border:none;
 font-size:16px;
 cursor:pointer;
+box-sizing:border-box;
 ">
 
 문의 보내기

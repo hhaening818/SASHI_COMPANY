@@ -429,6 +429,15 @@ color:#4a90a4;
 
 }
 
+.contact-form input,
+.contact-form textarea,
+.contact-form button{
+
+width:100%;
+box-sizing:border-box;
+
+}
+
 /* 모바일 최적화 */
 @media (max-width:768px){
 
