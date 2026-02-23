@@ -1,20 +1,23 @@
 import os
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, session
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.secret_key = "1234"
+app.secret_key = "secret123"
 
 UPLOAD_FOLDER = "static/uploads"
+DB_PATH = "database.db"
+
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-ADMIN_ID = "admin"
-ADMIN_PW = "1234"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# DB 생성
+# DB 초기화
 def init_db():
-    conn = sqlite3.connect("database.db")
+
+    conn = sqlite3.connect(DB_PATH)
+
     c = conn.cursor()
 
     c.execute("""
@@ -32,13 +35,15 @@ init_db()
 # 메인
 @app.route("/")
 def home():
+
     return render_template("index.html")
 
 # 시공사례
 @app.route("/portfolio")
 def portfolio():
 
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
+
     c = conn.cursor()
 
     c.execute("SELECT * FROM portfolio ORDER BY id DESC")
@@ -51,14 +56,11 @@ def portfolio():
 
 # 관리자 로그인
 @app.route("/admin", methods=["GET", "POST"])
-def admin_login():
+def admin():
 
     if request.method == "POST":
 
-        id = request.form["id"]
-        pw = request.form["pw"]
-
-        if id == ADMIN_ID and pw == ADMIN_PW:
+        if request.form["id"] == "admin" and request.form["pw"] == "1234":
 
             session["admin"] = True
 
@@ -81,9 +83,12 @@ def admin_panel():
 
             filename = secure_filename(file.filename)
 
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
-            conn = sqlite3.connect("database.db")
+            file.save(path)
+
+            conn = sqlite3.connect(DB_PATH)
+
             c = conn.cursor()
 
             c.execute("INSERT INTO portfolio (filename) VALUES (?)", (filename,))
@@ -91,7 +96,8 @@ def admin_panel():
             conn.commit()
             conn.close()
 
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
+
     c = conn.cursor()
 
     c.execute("SELECT * FROM portfolio ORDER BY id DESC")
@@ -109,15 +115,20 @@ def delete(id):
     if not session.get("admin"):
         return redirect("/admin")
 
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(DB_PATH)
+
     c = conn.cursor()
 
     c.execute("SELECT filename FROM portfolio WHERE id=?", (id,))
+
     file = c.fetchone()
 
     if file:
 
-        os.remove(os.path.join(app.config["UPLOAD_FOLDER"], file[0]))
+        path = os.path.join(app.config["UPLOAD_FOLDER"], file[0])
+
+        if os.path.exists(path):
+            os.remove(path)
 
         c.execute("DELETE FROM portfolio WHERE id=?", (id,))
 
@@ -130,9 +141,13 @@ def delete(id):
 @app.route("/logout")
 def logout():
 
-    session.pop("admin", None)
+    session.clear()
 
     return redirect("/")
 
+# Railway용 실행
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    port = int(os.environ.get("PORT", 5000))
+
+    app.run(host="0.0.0.0", port=port)
