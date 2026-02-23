@@ -406,10 +406,18 @@ def admin_contacts():
     if not session.get("admin"):
         return redirect("/gunjin_admin_7137")
 
+    region = request.args.get("region")
+
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
-    c.execute("SELECT * FROM contact ORDER BY id DESC")
+    if region:
+        c.execute(
+        "SELECT * FROM contact WHERE region LIKE ? ORDER BY id DESC",
+        (region + "%",)
+        )
+    else:
+        c.execute("SELECT * FROM contact ORDER BY id DESC")
 
     contacts = c.fetchall()
 
