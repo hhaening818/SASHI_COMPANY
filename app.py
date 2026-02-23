@@ -40,6 +40,20 @@ def init_db():
 
 init_db()
 
+def add_description_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE portfolio ADD COLUMN description TEXT")
+    except:
+        pass  # 이미 존재하면 무시
+
+    conn.commit()
+    conn.close()
+
+add_description_column()
 
 # 메인
 @app.route("/")
@@ -99,7 +113,7 @@ def admin_panel():
 
         file = request.files["file"]
         category = request.form["category"]
-        description = request.form["description"]
+        description = request.form.get("description", "")
 
         if file and category:
 

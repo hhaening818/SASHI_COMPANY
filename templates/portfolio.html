@@ -46,7 +46,11 @@ data-images='[
 </div>
 
 <div style="padding:10px; background:white; font-size:14px;">
+{% if img[3] %}
 {{ img[3] }}
+{% else %}
+설명 없음
+{% endif %}
 </div>
 
 </div>
