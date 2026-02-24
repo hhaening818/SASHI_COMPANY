@@ -6,7 +6,7 @@
 
 <div style="padding:40px;">
 
-<!-- ⭐ 여기로 이동 (for문 위) -->
+<!-- 상단 필터 + 총 문의 -->
 <div style="
 display:flex;
 justify-content:space-between;
@@ -22,70 +22,19 @@ style="padding:8px; border:1px solid #ccc;">
 
 <option value="">전체 지역</option>
 
-<option value="서울"
-{% if request.args.get('region') == '서울' %}selected{% endif %}>
-서울
-</option>
-
-<option value="부산"
-{% if request.args.get('region') == '부산' %}selected{% endif %}>
-부산
-</option>
-
-<option value="대구"
-{% if request.args.get('region') == '대구' %}selected{% endif %}>
-대구
-</option>
-
-<option value="인천"
-{% if request.args.get('region') == '인천' %}selected{% endif %}>
-인천
-</option>
-
-<option value="경기"
-{% if request.args.get('region') == '경기' %}selected{% endif %}>
-경기
-</option>
-
-<option value="강원"
-{% if request.args.get('region') == '강원' %}selected{% endif %}>
-강원
-</option>
-
-<option value="충북"
-{% if request.args.get('region') == '충북' %}selected{% endif %}>
-충북
-</option>
-
-<option value="충남"
-{% if request.args.get('region') == '충남' %}selected{% endif %}>
-충남
-</option>
-
-<option value="전북"
-{% if request.args.get('region') == '전북' %}selected{% endif %}>
-전북
-</option>
-
-<option value="전남"
-{% if request.args.get('region') == '전남' %}selected{% endif %}>
-전남
-</option>
-
-<option value="경북"
-{% if request.args.get('region') == '경북' %}selected{% endif %}>
-경북
-</option>
-
-<option value="경남"
-{% if request.args.get('region') == '경남' %}selected{% endif %}>
-경남
-</option>
-
-<option value="제주"
-{% if request.args.get('region') == '제주' %}selected{% endif %}>
-제주
-</option>
+<option value="서울" {% if request.args.get('region') == '서울' %}selected{% endif %}>서울</option>
+<option value="부산" {% if request.args.get('region') == '부산' %}selected{% endif %}>부산</option>
+<option value="대구" {% if request.args.get('region') == '대구' %}selected{% endif %}>대구</option>
+<option value="인천" {% if request.args.get('region') == '인천' %}selected{% endif %}>인천</option>
+<option value="경기" {% if request.args.get('region') == '경기' %}selected{% endif %}>경기</option>
+<option value="강원" {% if request.args.get('region') == '강원' %}selected{% endif %}>강원</option>
+<option value="충북" {% if request.args.get('region') == '충북' %}selected{% endif %}>충북</option>
+<option value="충남" {% if request.args.get('region') == '충남' %}selected{% endif %}>충남</option>
+<option value="전북" {% if request.args.get('region') == '전북' %}selected{% endif %}>전북</option>
+<option value="전남" {% if request.args.get('region') == '전남' %}selected{% endif %}>전남</option>
+<option value="경북" {% if request.args.get('region') == '경북' %}selected{% endif %}>경북</option>
+<option value="경남" {% if request.args.get('region') == '경남' %}selected{% endif %}>경남</option>
+<option value="제주" {% if request.args.get('region') == '제주' %}selected{% endif %}>제주</option>
 
 </select>
 
@@ -95,30 +44,33 @@ style="padding:8px; border:1px solid #ccc;">
 총 문의: {{ total_count }}건
 </div>
 
+</div>
+
+
+<!-- 지역별 문의 통계 -->
 <div style="
-margin-top:20px;
+margin-bottom:30px;
 padding:15px;
 background:#f5f5f5;
 ">
 
 <div style="font-weight:bold; margin-bottom:10px;">
-지역별 문의 수
+지역별 문의 수 (클릭하면 필터)
 </div>
 
 {% for stat in region_stats %}
 
-<div style="margin-bottom:8px;">
+<a href="/admin_contacts?region={{ stat[0] }}"
+style="text-decoration:none; color:black;">
+
+<div style="margin-bottom:10px; cursor:pointer;">
 
 <div style="display:flex; justify-content:space-between;">
 <span>{{ stat[0] }}</span>
 <span>{{ stat[1] }}건 ({{ stat[2] }}%)</span>
 </div>
 
-<div style="
-background:#ddd;
-height:10px;
-margin-top:4px;
-">
+<div style="background:#ddd; height:10px; margin-top:4px;">
 
 <div style="
 background:#2f7d32;
@@ -131,16 +83,24 @@ width:{{ stat[2] }}%;
 
 </div>
 
+</a>
+
 {% endfor %}
 
 </div>
 
-<!-- ⭐ 문의 목록 -->
+
+<!-- 문의 목록 -->
 {% for contact in contacts %}
 
-<div style="margin-bottom:20px; border-bottom:1px solid #ccc; padding-bottom:10px;">
+<div style="
+margin-bottom:20px;
+border-bottom:1px solid #ccc;
+padding-bottom:10px;
+">
 
 이름: {{ contact[1] }}<br>
+
 전화번호: {{ contact[2] }}<br>
 
 {% if contact[5] %}
@@ -148,11 +108,22 @@ width:{{ stat[2] }}%;
 {% endif %}
 
 내용: {{ contact[3] }}<br>
+
 날짜: {{ contact[4]|kst }}
 
 </div>
 
 {% endfor %}
+
+
+<!-- 문의 없을 때 표시 -->
+{% if contacts|length == 0 %}
+
+<div style="padding:20px; color:#888;">
+문의가 없습니다.
+</div>
+
+{% endif %}
 
 </div>
 
