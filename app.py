@@ -88,21 +88,6 @@ def add_created_at_column():
 
 add_created_at_column()
 
-def add_region_column():
-
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-
-    try:
-        c.execute("ALTER TABLE contact ADD COLUMN region TEXT")
-    except:
-        pass
-
-    conn.commit()
-    conn.close()
-
-add_region_column()
-
 def init_contact_db():
 
     conn = sqlite3.connect(DB_PATH)
@@ -122,6 +107,21 @@ def init_contact_db():
     conn.close()
 
 init_contact_db()
+
+def add_region_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE contact ADD COLUMN region TEXT")
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
+add_region_column()
 
 # 메인
 @app.route("/")
@@ -437,13 +437,23 @@ def admin_contacts():
 
     total_count = len(contacts)
 
-    # ⭐ 퍼센트 계산 추가
+    # 전체 문의 수 가져오기 (퍼센트 계산용)
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("SELECT COUNT(*) FROM contact")
+
+    total_all = c.fetchone()[0]
+
+    conn.close()
+
+    # ⭐ 퍼센트 계산
     region_stats = []
 
     for region_name, count in region_stats_raw:
 
-        if total_count > 0:
-            percent = round((count / total_count) * 100)
+        if total_all > 0:
+            percent = round((count / total_all) * 100)
         else:
             percent = 0
 
