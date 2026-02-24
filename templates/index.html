@@ -20,6 +20,31 @@ style="background:#1c2730;">
 
 </section>
 
+<section class="home-portfolio">
+
+    <div class="home-portfolio-header">
+        <h2>시공사례</h2>
+        <p>건진창호의 다양한 시공 사례를 확인해보세요</p>
+    </div>
+
+    <div class="home-portfolio-grid">
+
+        {% for img in construction_images[:4] %}
+        <div class="home-portfolio-card">
+
+            <img src="{{ url_for('static',
+                filename='uploads/' ~ img.category ~ '/' ~ img.filename) }}">
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="home-portfolio-more">
+        <a href="/portfolio">시공사례 전체보기 →</a>
+    </div>
+
+</section>
 
 <!-- ✅ 시공 사례 슬라이드 추가 -->
 <section class="home-slider">
