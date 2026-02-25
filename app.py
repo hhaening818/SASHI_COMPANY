@@ -149,7 +149,7 @@ def home():
 
     else:
 
-    hero = "https://source.unsplash.com/1600x900/?window,architecture,glass"
+        hero = "https://source.unsplash.com/1600x900/?window,architecture,glass"
 
 
     # 대표 제외 슬라이드용 이미지
