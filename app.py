@@ -10,7 +10,7 @@ def get_kst_time():
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-UPLOAD_FOLDER = "static/uploads"
+UPLOAD_FOLDER = "/data/uploads"
 DB_PATH = "database.db"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
