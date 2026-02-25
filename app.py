@@ -177,7 +177,7 @@ def home():
     return render_template(
         "index.html",
         hero=hero,
-        slide_images=slide_images
+        construction_images=slide_images 
     )
 
 @app.template_filter("kst")

@@ -50,39 +50,6 @@ style="background:#1c2730;">
 
 </section>
 
-<!-- 슬라이드 스크립트 -->
-<script>
-
-let currentSlide = 0;
-
-function showSlide(index){
-
-    const slides = document.querySelectorAll(".slide");
-    const container = document.querySelector(".slider-container");
-
-    if(slides.length === 0) return;
-
-    if(index >= slides.length)
-        currentSlide = 0;
-    else if(index < 0)
-        currentSlide = slides.length - 1;
-    else
-        currentSlide = index;
-
-    container.style.transform =
-        "translateX(-" + currentSlide * 100 + "%)";
-}
-
-function moveSlide(direction){
-    showSlide(currentSlide + direction);
-}
-
-setInterval(()=>{
-    moveSlide(1);
-}, 3000);
-
-</script>
-
 <script>
 
 let boxIndex = 0;
