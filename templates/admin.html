@@ -94,16 +94,26 @@ background:white;
 <th style="padding:10px;">지역</th>
 <th style="padding:10px;">문의내용</th>
 <th style="padding:10px;">시간</th>
+<th style="padding:10px;">삭제</th>
 </tr>
 
 {% for c in recent_contacts %}
 
 <tr style="border-top:1px solid #ddd;">
-<td style="padding:10px;">{{ c[0] }}</td>
 <td style="padding:10px;">{{ c[1] }}</td>
 <td style="padding:10px;">{{ c[2] }}</td>
 <td style="padding:10px;">{{ c[3] }}</td>
-<td style="padding:10px;">{{ c[4]|kst }}</td>
+<td style="padding:10px;">{{ c[4] }}</td>
+<td style="padding:10px;">{{ c[5]|kst }}</td>
+
+<td style="padding:10px;">
+<a href="/delete_contact/{{ c[0] }}"
+onclick="return confirm('이 문의를 삭제하시겠습니까?');"
+style="color:red; text-decoration:none;">
+삭제
+</a>
+</td>
+
 </tr>
 
 {% endfor %}

@@ -419,7 +419,7 @@ def admin_panel():
 
     # 최근 문의 5개 ⭐ 추가
     c.execute("""
-        SELECT name, phone, region, message, created_at
+        SELECT id, name, phone, region, message, created_at
         FROM contact
         ORDER BY created_at DESC
         LIMIT 5
@@ -608,6 +608,23 @@ def uploaded_file(category, filename):
         os.path.join("/data/uploads", category),
         filename
     )
+
+# 관리자 문의 삭제
+@app.route("/delete_contact/<int:id>")
+def delete_contact(id):
+
+    if not session.get("admin"):
+        return redirect("/gunjin_admin_7137")
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("DELETE FROM contact WHERE id=?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin_panel")
 
 # Railway 실행
 if __name__ == "__main__":
