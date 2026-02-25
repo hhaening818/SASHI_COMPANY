@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>관리자 패널</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f8;
+}
+
+/* 전체 레이아웃 */
+.admin-container{
+    display:flex;
+    height:100vh;
+}
+
+/* 좌측 메뉴 */
+.admin-sidebar{
+    width:220px;
+    background:#2f3e46;
+    color:white;
+    padding-top:20px;
+}
+
+.admin-sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.admin-sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:15px 20px;
+}
+
+.admin-sidebar a:hover{
+    background:#354f52;
+}
+
+/* 우측 콘텐츠 */
+.admin-content{
+    flex:1;
+    padding:30px;
+    background:white;
+    overflow:auto;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="admin-container">
+
+    <!-- 좌측 메뉴 -->
+    <div class="admin-sidebar">
+
+        <h2>관리자</h2>
+
+        <a href="/admin_dashboard">대시보드</a>
+
+        <a href="/admin_contacts">문의 관리</a>
+
+        <a href="/admin_panel">이미지 관리</a>
+
+        <a href="/logout">로그아웃</a>
+
+    </div>
+
+    <!-- 우측 콘텐츠 -->
+    <div class="admin-content">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
