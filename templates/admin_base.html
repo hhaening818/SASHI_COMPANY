@@ -34,14 +34,22 @@ body{
 
 .sidebar a{
     display:block;
-    padding:15px 20px;
+    padding:12px 20px;
     color:#d1d5db;
     text-decoration:none;
+    border-radius:8px;
+    margin:4px 10px;
     transition:0.2s;
 }
 
 .sidebar a:hover{
     background:#374151;
+    color:white;
+}
+
+/* ⭐ 현재 페이지 강조 */
+.sidebar a.active{
+    background:#2563eb;
     color:white;
 }
 
@@ -106,6 +114,10 @@ body{
     border-radius:8px;
 }
 
+.sidebar a:last-child{
+    margin-top:20px;
+}
+
 </style>
 
 </head>
@@ -118,11 +130,17 @@ body{
 
         <h2>관리자 패널</h2>
 
-        <a href="/admin_panel">대시보드</a>
+        <a href="/admin_panel"
+        class="{% if request.path == '/admin_panel' %}active{% endif %}">
+        대시보드
+        </a>
 
-        <a href="/admin_contacts">문의 관리</a>
+        <a href="/admin_contacts"
+        class="{% if request.path == '/admin_contacts' %}active{% endif %}">
+        문의 관리
+        </a>
 
-        <a href="/" class="home-btn">🏠 홈으로 이동</a>
+        <a href="/">🏠 홈으로 이동</a>
 
         <a href="/logout">로그아웃</a>
 
