@@ -94,6 +94,7 @@ background:white;
 <th style="padding:10px;">지역</th>
 <th style="padding:10px;">문의내용</th>
 <th style="padding:10px;">시간</th>
+<th style="padding:10px;">상태</th>
 <th style="padding:10px;">삭제</th>
 </tr>
 
@@ -105,6 +106,41 @@ background:white;
 <td style="padding:10px;">{{ c[3] }}</td>
 <td style="padding:10px;">{{ c[4] }}</td>
 <td style="padding:10px;">{{ c[5]|kst }}</td>
+
+<td style="padding:10px;">
+
+<a href="/toggle_contact_status/{{ c[0] }}"
+style="text-decoration:none;">
+
+{% if c[6] == "완료" %}
+
+<span style="
+background:#d4edda;
+color:#155724;
+padding:5px 10px;
+border-radius:6px;
+font-size:13px;
+">
+완료
+</span>
+
+{% else %}
+
+<span style="
+background:#f8d7da;
+color:#721c24;
+padding:5px 10px;
+border-radius:6px;
+font-size:13px;
+">
+미완료
+</span>
+
+{% endif %}
+
+</a>
+
+</td>
 
 <td style="padding:10px;">
 <a href="/delete_contact/{{ c[0] }}"

@@ -109,6 +109,21 @@ def init_contact_db():
 
 init_contact_db()
 
+def add_contact_status_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE contact ADD COLUMN status TEXT DEFAULT '미완료'")
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
+add_contact_status_column()
+
 def add_region_column():
 
     conn = sqlite3.connect(DB_PATH)
@@ -419,7 +434,7 @@ def admin_panel():
 
     # 최근 문의 5개 ⭐ 추가
     c.execute("""
-        SELECT id, name, phone, region, message, created_at
+        SELECT id, name, phone, region, message, created_at, status
         FROM contact
         ORDER BY created_at DESC
         LIMIT 5
@@ -620,6 +635,30 @@ def delete_contact(id):
     c = conn.cursor()
 
     c.execute("DELETE FROM contact WHERE id=?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin_panel")
+
+@app.route("/toggle_contact_status/<int:id>")
+def toggle_contact_status(id):
+
+    if not session.get("admin"):
+        return redirect("/gunjin_admin_7137")
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("SELECT status FROM contact WHERE id=?", (id,))
+    current = c.fetchone()[0]
+
+    new_status = "완료" if current == "미완료" else "미완료"
+
+    c.execute(
+        "UPDATE contact SET status=? WHERE id=?",
+        (new_status, id)
+    )
 
     conn.commit()
     conn.close()
