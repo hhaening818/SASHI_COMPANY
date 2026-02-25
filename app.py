@@ -152,12 +152,12 @@ def home():
         hero = None
 
 
-    # 슬라이드 이미지 가져오기
+    # 대표 제외 슬라이드용 이미지
     c.execute("""
         SELECT filename, category
         FROM portfolio
+        WHERE is_main IS NULL OR is_main=0
         ORDER BY created_at DESC
-        LIMIT 5
     """)
 
     rows = c.fetchall()
@@ -165,11 +165,10 @@ def home():
     conn.close()
 
 
-    construction_images = []
+    slide_images = []
 
     for row in rows:
-
-        construction_images.append({
+        slide_images.append({
             "filename": row[0],
             "category": row[1]
         })
@@ -178,7 +177,7 @@ def home():
     return render_template(
         "index.html",
         hero=hero,
-        construction_images=construction_images
+        slide_images=slide_images
     )
 
 @app.template_filter("kst")

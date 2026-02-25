@@ -19,60 +19,36 @@ style="background:#1c2730;">
     </div>
 
 </section>
-{% if construction_images %}
-<section class="home-portfolio">
 
-    <div class="home-portfolio-header">
-        <h2>시공사례</h2>
-        <p>건진창호의 다양한 시공 사례를 확인해보세요</p>
-    </div>
+<section class="box-slide-section">
 
-    <div class="home-portfolio-grid">
+    <h2 class="slide-title">시공사례</h2>
 
-        {% for img in construction_images[:4] %}
-        <div class="home-portfolio-card">
+    <div class="box-slide-wrapper">
 
-            <img src="{{ url_for('static',
-                filename='uploads/' ~ img.category ~ '/' ~ img.filename) }}">
+        <button class="box-slide-btn left"
+        onclick="moveBoxSlide(-1)">‹</button>
 
-        </div>
-        {% endfor %}
-
-    </div>
-
-    <div class="home-portfolio-more">
-        <a href="/portfolio">시공사례 전체보기 →</a>
-    </div>
-
-</section>
-{% endif %}
-<!-- ✅ 시공 사례 슬라이드 추가 -->
-<section class="home-slider">
-
-    <h2 style="text-align:center; margin:40px 0;">
-        시공 사례
-    </h2>
-
-    <div class="slider-wrapper">
-
-        <div class="slider-container">
+        <div class="box-slide-container"
+             id="box-slide-container">
 
             {% for img in construction_images %}
-            <div class="slide">
+            <div class="box-slide-card">
+
                 <img src="{{ url_for('static',
                     filename='uploads/' ~ img.category ~ '/' ~ img.filename) }}">
+
             </div>
             {% endfor %}
 
         </div>
 
-        <button class="slider-btn prev" onclick="moveSlide(-1)">‹</button>
-        <button class="slider-btn next" onclick="moveSlide(1)">›</button>
+        <button class="box-slide-btn right"
+        onclick="moveBoxSlide(1)">›</button>
 
     </div>
 
 </section>
-
 
 <!-- 슬라이드 스크립트 -->
 <script>
@@ -107,57 +83,32 @@ setInterval(()=>{
 
 </script>
 
+<script>
 
-<!-- 슬라이드 스타일 -->
-<style>
+let boxIndex = 0;
 
-.home-slider{
-    width:100%;
-    max-width:1200px;
-    margin:60px auto;
+function moveBoxSlide(direction){
+
+    const container =
+        document.getElementById("box-slide-container");
+
+    const total =
+        document.querySelectorAll(".box-slide-card").length;
+
+    const visible = 3;
+
+    boxIndex += direction;
+
+    if(boxIndex < 0)
+        boxIndex = 0;
+
+    if(boxIndex > total - visible)
+        boxIndex = total - visible;
+
+    container.style.transform =
+        "translateX(-" + (boxIndex * 33.333) + "%)";
 }
 
-.slider-wrapper{
-    position:relative;
-    overflow:hidden;
-}
-
-.slider-container{
-    display:flex;
-    transition:transform 0.5s ease;
-}
-
-.slide{
-    min-width:100%;
-}
-
-.slide img{
-    width:100%;
-    height:500px;
-    object-fit:cover;
-    border-radius:10px;
-}
-
-.slider-btn{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    background:rgba(0,0,0,0.4);
-    color:white;
-    border:none;
-    font-size:30px;
-    padding:10px 15px;
-    cursor:pointer;
-}
-
-.prev{
-    left:10px;
-}
-
-.next{
-    right:10px;
-}
-
-</style>
+</script>
 
 {% endblock %}
