@@ -345,6 +345,9 @@ def admin_panel():
     if not session.get("admin"):
         return redirect("/gunjin_admin_7137")
 
+    # ======================
+    # 업로드 처리
+    # ======================
     if request.method == "POST":
 
         cropped = request.form.get("cropped_image")
@@ -386,6 +389,9 @@ def admin_panel():
             conn.commit()
             conn.close()
 
+    # ======================
+    # 통계 + 목록 조회
+    # ======================
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -411,7 +417,20 @@ def admin_panel():
     """)
     last_upload = c.fetchone()
 
+    # 최근 문의 5개 ⭐ 추가
+    c.execute("""
+        SELECT name, phone, region, message, created_at
+        FROM contact
+        ORDER BY created_at DESC
+        LIMIT 5
+    """)
+    recent_contacts = c.fetchall()
+
     conn.close()
+
+    # ======================
+    # 렌더링
+    # ======================
 
     return render_template(
         "admin.html",
@@ -419,23 +438,8 @@ def admin_panel():
         categories=CATEGORIES,
         total_images=total_images,
         total_contacts=total_contacts,
-        last_upload=last_upload[0] if last_upload else None
-    )
-
-    # 이미지 목록 불러오기
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-
-    c.execute("SELECT * FROM portfolio ORDER BY id DESC")
-
-    images = c.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "admin.html",
-        images=images,
-        categories=CATEGORIES
+        last_upload=last_upload[0] if last_upload else None,
+        recent_contacts=recent_contacts
     )
 
 @app.route("/set_main/<int:id>")

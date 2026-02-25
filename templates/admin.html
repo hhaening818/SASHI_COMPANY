@@ -43,6 +43,41 @@
 
 </div>
 
+<!-- ⭐ 최근 문의 -->
+<div style="padding:40px; padding-top:20px;">
+
+<h2>최근 문의</h2>
+
+<table style="
+width:100%;
+border-collapse:collapse;
+background:white;
+">
+
+<tr style="background:#f1f3f5;">
+<th style="padding:10px;">이름</th>
+<th style="padding:10px;">전화번호</th>
+<th style="padding:10px;">지역</th>
+<th style="padding:10px;">문의내용</th>
+<th style="padding:10px;">시간</th>
+</tr>
+
+{% for c in recent_contacts %}
+
+<tr style="border-top:1px solid #ddd;">
+<td style="padding:10px;">{{ c[0] }}</td>
+<td style="padding:10px;">{{ c[1] }}</td>
+<td style="padding:10px;">{{ c[2] }}</td>
+<td style="padding:10px;">{{ c[3] }}</td>
+<td style="padding:10px;">{{ c[4]|kst }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
 <h1 style="padding:40px;">관리자 업로드</h1>
 
 <form method="POST" enctype="multipart/form-data" style="padding:40px;">
