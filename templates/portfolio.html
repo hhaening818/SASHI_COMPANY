@@ -33,7 +33,7 @@ data-images='[
 
 {% for img in images %}
 
-{% set img_url = url_for('static', filename='uploads/' ~ img[2] ~ '/' ~ img[1]) %}
+{% set img_url = url_for('uploaded_file', category=img[2], filename=img[1]) %}
 
 <div class="portfolio-card {{ img[2] }}"
      data-index="{{ loop.index0 }}"

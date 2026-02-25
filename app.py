@@ -4,6 +4,7 @@ import random
 from flask import Flask, render_template, request, redirect, session, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+from flask import send_from_directory
 def get_kst_time():
     return datetime.utcnow() + timedelta(hours=9)
 
@@ -555,7 +556,7 @@ from flask import send_from_directory
 @app.route("/uploads/<category>/<filename>")
 def uploaded_file(category, filename):
     return send_from_directory(
-        os.path.join(UPLOAD_FOLDER, category),
+        os.path.join("/data/uploads", category),
         filename
     )
 

@@ -47,7 +47,7 @@ style="width:300px; padding:8px;">
 
 {% for img in images %}
 
-{% set img_url = url_for('static', filename='uploads/' ~ img[2] ~ '/' ~ img[1]) %}
+{% set img_url = url_for('uploaded_file', category=img[2], filename=img[1]) %}
 
 <div style="margin-bottom:30px;">
 

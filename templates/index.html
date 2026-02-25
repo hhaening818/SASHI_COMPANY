@@ -16,30 +16,32 @@ style="background:url('{{ hero }}') center/cover no-repeat;">
 
 <section class="box-slide-section">
 
-    <h2 class="slide-title">시공사례</h2>
+<h2 class="slide-title">시공사례</h2>
 
-    <div class="box-slide-wrapper">
+<div class="box-slide-wrapper">
 
-        <button class="box-slide-btn left"
-        onclick="moveBoxSlide(-1)">‹</button>
+<button class="box-slide-btn left"
+onclick="moveBoxSlide(-1)">‹</button>
 
-        <div class="box-slide-container"
-             id="box-slide-container">
+<div class="box-slide-container"
+id="box-slide-container">
 
-            {% for img in construction_images %}
-            <div class="box-slide-card">
+{% for img in construction_images %}
+<div class="box-slide-card">
 
-                <img src="/uploads/{{ img.category }}/{{ img.filename }}">
+<img src="{{ url_for('uploaded_file',
+category=img.category,
+filename=img.filename) }}">
 
-            </div>
-            {% endfor %}
+</div>
+{% endfor %}
 
-        </div>
+</div>
 
-        <button class="box-slide-btn right"
-        onclick="moveBoxSlide(1)">›</button>
+<button class="box-slide-btn right"
+onclick="moveBoxSlide(1)">›</button>
 
-    </div>
+</div>
 
 </section>
 
@@ -49,24 +51,24 @@ let boxIndex = 0;
 
 function moveBoxSlide(direction){
 
-    const container =
-        document.getElementById("box-slide-container");
+const container =
+document.getElementById("box-slide-container");
 
-    const total =
-        document.querySelectorAll(".box-slide-card").length;
+const total =
+document.querySelectorAll(".box-slide-card").length;
 
-    const visible = 3;
+const visible = 3;
 
-    boxIndex += direction;
+boxIndex += direction;
 
-    if(boxIndex < 0)
-        boxIndex = 0;
+if(boxIndex < 0)
+boxIndex = 0;
 
-    if(boxIndex > total - visible)
-        boxIndex = total - visible;
+if(boxIndex > total - visible)
+boxIndex = total - visible;
 
-    container.style.transform =
-        "translateX(-" + (boxIndex * 33.333) + "%)";
+container.style.transform =
+"translateX(-" + (boxIndex * 33.333) + "%)";
 }
 
 </script>
