@@ -147,10 +147,7 @@ def home():
     if main:
 
         hero_images.append(
-            url_for(
-                "static",
-                filename="uploads/" + main[1] + "/" + main[0]
-            )
+            "/uploads/" + row[1] + "/" + row[0]
         )
 
 
@@ -551,6 +548,15 @@ def admin_contacts():
         contacts=contacts,
         total_count=total_count,
         region_stats=region_stats
+    )
+
+from flask import send_from_directory
+
+@app.route("/uploads/<category>/<filename>")
+def uploaded_file(category, filename):
+    return send_from_directory(
+        os.path.join(UPLOAD_FOLDER, category),
+        filename
     )
 
 # Railway 실행

@@ -29,8 +29,7 @@ style="background:url('{{ hero }}') center/cover no-repeat;">
             {% for img in construction_images %}
             <div class="box-slide-card">
 
-                <img src="{{ url_for('static',
-                    filename='uploads/' ~ img.category ~ '/' ~ img.filename) }}">
+                <img src="/uploads/{{ img.category }}/{{ img.filename }}">
 
             </div>
             {% endfor %}
