@@ -43,6 +43,40 @@
 
 </div>
 
+<!-- 최근 업로드 이미지 -->
+<div style="padding:40px; padding-top:20px;">
+
+<h2>최근 업로드 이미지</h2>
+
+<div style="display:flex; gap:15px; flex-wrap:wrap;">
+
+{% for img in recent_images %}
+
+{% set img_url = url_for('uploaded_file', category=img[2], filename=img[1]) %}
+
+<div>
+
+<img src="{{ img_url }}"
+style="
+width:140px;
+height:100px;
+object-fit:cover;
+border-radius:8px;
+border:1px solid #ddd;
+">
+
+<div style="font-size:12px; color:#666;">
+{{ img[3]|kst }}
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
 <!-- ⭐ 최근 문의 -->
 <div style="padding:40px; padding-top:20px;">
 

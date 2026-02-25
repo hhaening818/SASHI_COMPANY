@@ -426,6 +426,15 @@ def admin_panel():
     """)
     recent_contacts = c.fetchall()
 
+    # 최근 업로드 이미지 5개 ⭐ 추가
+    c.execute("""
+        SELECT id, filename, category, created_at
+        FROM portfolio
+        ORDER BY created_at DESC
+        LIMIT 5
+    """)
+    recent_images = c.fetchall()
+    
     conn.close()
 
     # ======================
@@ -439,7 +448,8 @@ def admin_panel():
         total_images=total_images,
         total_contacts=total_contacts,
         last_upload=last_upload[0] if last_upload else None,
-        recent_contacts=recent_contacts
+        recent_contacts=recent_contacts,
+        recent_images=recent_images
     )
 
 @app.route("/set_main/<int:id>")
