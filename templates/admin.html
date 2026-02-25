@@ -6,7 +6,19 @@
 
 <form method="POST" enctype="multipart/form-data" style="padding:40px;">
 
-<input type="file" name="file" required>
+<input type="file" id="fileInput" accept="image/*" required>
+
+<br><br>
+
+<img id="preview" style="max-width:500px; display:none;">
+
+<input type="hidden" name="cropped_image" id="cropped_image">
+
+<br><br>
+
+<button type="button" onclick="cropImage()">자르기 적용</button>
+
+<br><br>
 
 <select name="category">
 
@@ -117,4 +129,64 @@ document.getElementById("admin-modal").classList.remove("show");
 
 </script>
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
+<script>
+
+let cropper;
+
+document.getElementById("fileInput").addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        const img = document.getElementById("preview");
+
+        img.src = event.target.result;
+        img.style.display = "block";
+
+        if(cropper){
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(img, {
+
+            aspectRatio: 16/9,
+            viewMode: 1,
+            autoCropArea: 1
+
+        });
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+
+function cropImage(){
+
+    const canvas = cropper.getCroppedCanvas({
+
+        width:1600,
+        height:900
+
+    });
+
+    const base64 = canvas.toDataURL("image/jpeg", 0.9);
+
+    document.getElementById("cropped_image").value = base64;
+
+    alert("자르기 완료! 업로드 버튼을 누르세요.");
+
+}
+
+</script>
+
 {% endblock %}
+

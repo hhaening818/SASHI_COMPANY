@@ -349,13 +349,19 @@ def admin_panel():
 
     if request.method == "POST":
 
-        file = request.files["file"]
+        cropped = request.form.get("cropped_image")
         category = request.form["category"]
         description = request.form.get("description", "")
 
-        if file and category:
+        # Cropper로 자른 이미지 저장
+        if cropped and category:
 
-            filename = secure_filename(file.filename)
+            import base64
+            import time
+
+            header, data = cropped.split(",")
+
+            filename = f"crop_{int(time.time())}.jpg"
 
             save_path = os.path.join(
                 app.config["UPLOAD_FOLDER"],
@@ -363,7 +369,8 @@ def admin_panel():
                 filename
             )
 
-            file.save(save_path)
+            with open(save_path, "wb") as f:
+                f.write(base64.b64decode(data))
 
             conn = sqlite3.connect(DB_PATH)
             c = conn.cursor()
@@ -371,8 +378,12 @@ def admin_panel():
             kst_time = get_kst_time()
 
             c.execute(
-            "INSERT INTO portfolio (filename, category, description, created_at) VALUES (?, ?, ?, ?)",
-            (filename, category, description, kst_time)
+                """
+                INSERT INTO portfolio
+                (filename, category, description, created_at)
+                VALUES (?, ?, ?, ?)
+                """,
+                (filename, category, description, kst_time)
             )
 
             conn.commit()
