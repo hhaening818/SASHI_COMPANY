@@ -160,10 +160,16 @@ def home():
 
     main = c.fetchone()
 
+    main = c.fetchone()
+
     if main:
 
         hero_images.append(
-            "/uploads/" + row[1] + "/" + row[0]
+            url_for(
+                "uploaded_file",
+                category=main[1],
+                filename=main[0]
+            )
         )
 
 
@@ -450,6 +456,10 @@ def admin_panel():
     """)
     recent_images = c.fetchall()
     
+    # 🔴 미완료 문의 수
+    c.execute("SELECT COUNT(*) FROM contact WHERE status='미완료'")
+    pending_contacts = c.fetchone()[0]
+    
     conn.close()
 
     # ======================
@@ -464,7 +474,8 @@ def admin_panel():
         total_contacts=total_contacts,
         last_upload=last_upload[0] if last_upload else None,
         recent_contacts=recent_contacts,
-        recent_images=recent_images
+        recent_images=recent_images,
+        pending_contacts=pending_contacts
     )
 
 @app.route("/set_main/<int:id>")
