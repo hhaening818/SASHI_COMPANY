@@ -130,11 +130,15 @@ def home():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
-    c.execute("SELECT filename, category FROM portfolio WHERE is_main=1 LIMIT 1")
+    # 대표 이미지
+    c.execute("""
+        SELECT filename, category
+        FROM portfolio
+        WHERE is_main=1
+        LIMIT 1
+    """)
 
     result = c.fetchone()
-
-    conn.close()
 
     if result:
 
@@ -145,9 +149,37 @@ def home():
 
     else:
 
-        hero = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070"
+        hero = None
 
-    return render_template("index.html", hero=hero)
+
+    # 슬라이드 이미지 가져오기
+    c.execute("""
+        SELECT filename, category
+        FROM portfolio
+        ORDER BY created_at DESC
+        LIMIT 5
+    """)
+
+    rows = c.fetchall()
+
+    conn.close()
+
+
+    construction_images = []
+
+    for row in rows:
+
+        construction_images.append({
+            "filename": row[0],
+            "category": row[1]
+        })
+
+
+    return render_template(
+        "index.html",
+        hero=hero,
+        construction_images=construction_images
+    )
 
 @app.template_filter("kst")
 def format_kst(datetime_str):
