@@ -155,9 +155,18 @@ document.getElementById("fileInput").addEventListener("change", function(e){
             cropper.destroy();
         }
 
+        const category =
+            document.querySelector("select[name='category']").value;
+
+        let ratio = 4/3;
+
+        if(category === "hero"){
+            ratio = 16/9;
+        }
+
         cropper = new Cropper(img, {
 
-            aspectRatio: 16/9,
+            aspectRatio: 4/3,
             viewMode: 1,
             autoCropArea: 1
 
