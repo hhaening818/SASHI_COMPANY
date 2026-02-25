@@ -160,7 +160,7 @@ style="color:red; text-decoration:none;">
 
 <h2 style="margin-bottom:20px;">이미지 업로드</h2>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" id="uploadForm"></form>
 
 <!-- 드롭 영역 -->
 <div id="drop-area"
@@ -276,6 +276,39 @@ font-weight:bold;
 ">
 ⬆ 업로드
 </button>
+
+<!-- 진행바 -->
+<div id="upload-progress"
+style="
+display:none;
+margin-top:15px;
+width:100%;
+max-width:400px;
+background:#e5e7eb;
+border-radius:8px;
+overflow:hidden;
+">
+
+<div id="upload-bar"
+style="
+width:0%;
+height:14px;
+background:#10b981;
+transition:width 0.3s;
+">
+</div>
+
+</div>
+
+<div id="upload-percent"
+style="
+font-size:13px;
+color:#374151;
+margin-top:5px;
+display:none;
+">
+0%
+</div>
 
 </form>
 
@@ -565,6 +598,67 @@ document.querySelector("select[name='category']")
     let ratio = this.value === "hero" ? 16/9 : 4/3;
 
     cropper.setAspectRatio(ratio);
+
+});
+
+const uploadForm = document.getElementById("uploadForm");
+const progress = document.getElementById("upload-progress");
+const bar = document.getElementById("upload-bar");
+const percent = document.getElementById("upload-percent");
+
+uploadForm.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    if(!cropper){
+        alert("이미지를 먼저 선택하세요.");
+        return;
+    }
+
+    const canvas = cropper.getCroppedCanvas({
+        width:1600,
+        height:900
+    });
+
+    const base64 = canvas.toDataURL("image/jpeg", 0.9);
+
+    document.getElementById("cropped_image").value = base64;
+
+    const formData = new FormData(uploadForm);
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/admin_panel", true);
+
+    progress.style.display = "block";
+    percent.style.display = "block";
+
+    xhr.upload.onprogress = function(e){
+
+        if(e.lengthComputable){
+
+            const p = Math.round((e.loaded / e.total) * 100);
+
+            bar.style.width = p + "%";
+
+            percent.innerText = p + "%";
+
+        }
+
+    };
+
+    xhr.onload = function(){
+
+        bar.style.width = "100%";
+        percent.innerText = "업로드 완료";
+
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+
+    };
+
+    xhr.send(formData);
 
 });
 
