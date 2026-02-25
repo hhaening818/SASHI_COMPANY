@@ -2,6 +2,47 @@
 
 {% block content %}
 
+<!-- ⭐ 대시보드 통계 -->
+<div style="display:flex; gap:20px; padding:40px; padding-bottom:0;">
+
+    <div style="
+        background:#f1f3f5;
+        padding:20px;
+        border-radius:10px;
+        min-width:180px;
+    ">
+        <div style="font-size:14px; color:#666;">총 이미지</div>
+        <div style="font-size:28px; font-weight:bold;">
+            {{ total_images }}
+        </div>
+    </div>
+
+    <div style="
+        background:#f1f3f5;
+        padding:20px;
+        border-radius:10px;
+        min-width:180px;
+    ">
+        <div style="font-size:14px; color:#666;">총 문의</div>
+        <div style="font-size:28px; font-weight:bold;">
+            {{ total_contacts }}
+        </div>
+    </div>
+
+    <div style="
+        background:#f1f3f5;
+        padding:20px;
+        border-radius:10px;
+        min-width:220px;
+    ">
+        <div style="font-size:14px; color:#666;">최근 업로드</div>
+        <div style="font-size:16px;">
+            {{ last_upload|kst if last_upload else "없음" }}
+        </div>
+    </div>
+
+</div>
+
 <h1 style="padding:40px;">관리자 업로드</h1>
 
 <form method="POST" enctype="multipart/form-data" style="padding:40px;">

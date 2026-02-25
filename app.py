@@ -351,7 +351,6 @@ def admin_panel():
         category = request.form["category"]
         description = request.form.get("description", "")
 
-        # Cropper로 자른 이미지 저장
         if cropped and category:
 
             import base64
@@ -386,6 +385,42 @@ def admin_panel():
 
             conn.commit()
             conn.close()
+
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    # 이미지 목록
+    c.execute("SELECT * FROM portfolio ORDER BY id DESC")
+    images = c.fetchall()
+
+    # 총 이미지 수
+    c.execute("SELECT COUNT(*) FROM portfolio")
+    total_images = c.fetchone()[0]
+
+    # 총 문의 수
+    c.execute("SELECT COUNT(*) FROM contact")
+    total_contacts = c.fetchone()[0]
+
+    # 최근 업로드
+    c.execute("""
+        SELECT created_at
+        FROM portfolio
+        ORDER BY created_at DESC
+        LIMIT 1
+    """)
+    last_upload = c.fetchone()
+
+    conn.close()
+
+    return render_template(
+        "admin.html",
+        images=images,
+        categories=CATEGORIES,
+        total_images=total_images,
+        total_contacts=total_contacts,
+        last_upload=last_upload[0] if last_upload else None
+    )
 
     # 이미지 목록 불러오기
     conn = sqlite3.connect(DB_PATH)
