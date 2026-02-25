@@ -482,7 +482,7 @@ def logout():
 
     session.clear()
 
-    return redirect("/")
+    return redirect("/gunjin_admin_7137")
 
 # 관리자 문의 관리
 @app.route("/admin_contacts")
