@@ -124,13 +124,17 @@ def add_region_column():
 add_region_column()
 
 # 메인
+import random
+
 @app.route("/")
 def home():
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
-    # 대표 이미지
+    hero_images = []
+
+    # 1️⃣ 대표사진 1장
     c.execute("""
         SELECT filename, category
         FROM portfolio
@@ -138,25 +142,65 @@ def home():
         LIMIT 1
     """)
 
-    result = c.fetchone()
+    main = c.fetchone()
 
-    if result:
+    if main:
 
-        hero = url_for(
-            "static",
-            filename="uploads/" + result[1] + "/" + result[0]
+        hero_images.append(
+            url_for(
+                "static",
+                filename="uploads/" + main[1] + "/" + main[0]
+            )
         )
 
-    else:
 
-        hero = "https://source.unsplash.com/1600x900/?window,architecture,glass"
-
-
-    # 대표 제외 슬라이드용 이미지
+    # 2️⃣ 최근 시공사례 4장
     c.execute("""
         SELECT filename, category
         FROM portfolio
-        WHERE is_main IS NULL OR is_main=0
+        ORDER BY created_at DESC
+        LIMIT 4
+    """)
+
+    rows = c.fetchall()
+
+    for row in rows:
+
+        hero_images.append(
+            url_for(
+                "static",
+                filename="uploads/" + row[1] + "/" + row[0]
+            )
+        )
+
+
+    # 3️⃣ 웹 이미지 5장
+    web_images = [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+        "https://images.unsplash.com/photo-1600573472550-8090b5e0745e",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea",
+        "https://images.unsplash.com/photo-1600607687644-c7171b42498f"
+    ]
+
+    hero_images.extend(web_images)
+
+
+    # ⭐ 핵심: 순서 랜덤 섞기
+    random.shuffle(hero_images)
+
+    hero = hero_images[0] if hero_images else None
+
+    conn.close()
+
+
+    # 슬라이드용 시공사례
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    c.execute("""
+        SELECT filename, category
+        FROM portfolio
         ORDER BY created_at DESC
     """)
 
@@ -164,10 +208,10 @@ def home():
 
     conn.close()
 
-
     slide_images = []
 
     for row in rows:
+
         slide_images.append({
             "filename": row[0],
             "category": row[1]
@@ -176,8 +220,9 @@ def home():
 
     return render_template(
         "index.html",
+        hero_images=hero_images,
         hero=hero,
-        construction_images=slide_images 
+        construction_images=slide_images
     )
 
 @app.template_filter("kst")
