@@ -651,17 +651,17 @@ uploadForm.addEventListener("submit", function(e){
 
     formData.append(
         "category",
-        document.querySelector("select[name='category']").value
+        uploadForm.querySelector("select[name='category']").value
     );
 
     const location =
-    document.querySelector("input[name='location']").value;
+    uploadForm.querySelector("input[name='location']").value;
 
     const brand =
-    document.querySelector("input[name='brand']").value;
+    uploadForm.querySelector("input[name='brand']").value;
 
     const type =
-    document.querySelector("select[name='type']").value;
+    uploadForm.querySelector("select[name='type']").value;
 
     const description =
     location + "|" + brand + "|" + type;
