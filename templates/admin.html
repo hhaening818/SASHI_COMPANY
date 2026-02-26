@@ -185,6 +185,7 @@ JPG, PNG 지원
 
 <input type="file"
 id="fileInput"
+name="file"
 accept="image/*"
 multiple
 style="display:none;">
@@ -623,9 +624,17 @@ uploadForm.addEventListener("submit", function(e){
 
     const base64 = canvas.toDataURL("image/jpeg", 0.9);
 
-    document.getElementById("cropped_image").value = base64;
+    const formData = new FormData();
 
-    const formData = new FormData(uploadForm);
+    formData.append("cropped_image", base64);
+    formData.append(
+        "category",
+        document.querySelector("select[name='category']").value
+    );
+    formData.append(
+        "description",
+        document.querySelector("input[name='description']").value
+    );
 
     const xhr = new XMLHttpRequest();
 
@@ -650,45 +659,44 @@ uploadForm.addEventListener("submit", function(e){
 
     xhr.onload = function(){
 
-    bar.style.width = "100%";
-    percent.innerText = "업로드 완료";
+        bar.style.width = "100%";
+        percent.innerText = "업로드 완료";
 
-    // 서버에서 최신 이미지 가져오기
-    fetch("/admin_panel?ajax=1")
-    .then(res => res.json())
-    .then(data => {
+        fetch("/admin_panel?ajax=1")
+        .then(res => res.json())
+        .then(data => {
 
-        const container =
-            document.getElementById("image-container");
+            const container =
+                document.getElementById("image-container");
 
-        const img = data.image;
+            const img = data.image;
 
-        const html = `
-        <div style="
-        margin-bottom:20px;
-        background:white;
-        padding:12px;
-        border-radius:10px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.08);
-        width:260px;
-        ">
+            const html = `
+            <div style="
+            margin-bottom:20px;
+            background:white;
+            padding:12px;
+            border-radius:10px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.08);
+            width:260px;
+            ">
 
-        <img src="${img.url}"
-        width="250"
-        style="border-radius:8px;">
+            <img src="${img.url}"
+            width="250"
+            style="border-radius:8px;">
 
-        <div style="margin-top:5px;">
-        카테고리: ${img.category}
-        </div>
+            <div style="margin-top:5px;">
+            카테고리: ${img.category}
+            </div>
 
-        </div>
-        `;
+            </div>
+            `;
 
-        container.insertAdjacentHTML("afterbegin", html);
+            container.insertAdjacentHTML("afterbegin", html);
 
-    });
+        });
 
-};
+    };
 
     xhr.send(formData);
 
