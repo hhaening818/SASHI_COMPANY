@@ -1,19 +1,18 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 {% set hero_bg = hero if hero else url_for('static', filename='images/default.jpg') %}
 
 <section class="hero"
-style="background:url('{{ hero_bg }}') center center / cover no-repeat;">
+style="background:url('{{ hero_bg }}') center/cover no-repeat;">
 <div class="hero-overlay">
 
 <h1>창호 시공 전문 기업</h1>
 <p>정확한 시공, 완벽한 품질</p>
 
 </div>
-
 </section>
+
 
 <section class="box-slide-section">
 
@@ -22,25 +21,27 @@ style="background:url('{{ hero_bg }}') center center / cover no-repeat;">
 <div class="box-slide-wrapper">
 
 <button class="box-slide-btn left"
-onclick="moveBoxSlide(-1)">‹</button>
+onclick="moveSlide(-1)">‹</button>
 
 <div class="box-slide-container"
-id="box-slide-container">
+id="slide-container">
 
 {% for img in construction_images %}
-<div class="box-slide-card">
+
+<div class="slide-card">
 
 <img src="{{ url_for('uploaded_file',
 category=img.category,
 filename=img.filename) }}">
 
 </div>
+
 {% endfor %}
 
 </div>
 
 <button class="box-slide-btn right"
-onclick="moveBoxSlide(1)">›</button>
+onclick="moveSlide(1)">›</button>
 
 </div>
 
@@ -48,28 +49,29 @@ onclick="moveBoxSlide(1)">›</button>
 
 <script>
 
-let boxIndex = 0;
+let index = 0;
 
-function moveBoxSlide(direction){
+function moveSlide(dir){
 
 const container =
-document.getElementById("box-slide-container");
+document.getElementById("slide-container");
 
 const total =
-document.querySelectorAll(".box-slide-card").length;
+document.querySelectorAll(".slide-card").length;
 
 const visible = 3;
 
-boxIndex += direction;
+index += dir;
 
-if(boxIndex < 0)
-boxIndex = 0;
+if(index < 0)
+index = 0;
 
-if(boxIndex > total - visible)
-boxIndex = total - visible;
+if(index > total - visible)
+index = total - visible;
 
 container.style.transform =
-"translateX(-" + (boxIndex * 33.333) + "%)";
+"translateX(-" + (index * 33.333) + "%)";
+
 }
 
 </script>

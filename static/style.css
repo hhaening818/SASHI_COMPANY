@@ -626,6 +626,106 @@ backdrop-filter:blur(4px);
 }
 
 /* =========================
+   HOME BOX SLIDE
+========================= */
+
+.box-slide-section{
+
+padding:60px 40px;
+background:#f8fafc;
+
+}
+
+.slide-title{
+
+text-align:center;
+font-size:28px;
+margin-bottom:30px;
+
+}
+
+.box-slide-wrapper{
+
+display:flex;
+align-items:center;
+justify-content:center;
+max-width:1200px;
+margin:auto;
+position:relative;
+
+}
+
+.box-slide-container{
+
+display:flex;
+gap:20px;
+overflow:hidden;
+width:100%;
+transition:transform 0.4s ease;
+
+}
+
+.box-slide-card{
+
+min-width:calc(33.333% - 14px);
+flex-shrink:0;
+
+}
+
+.box-slide-card img{
+
+width:100%;
+height:240px;
+object-fit:cover;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+
+/* 슬라이드 버튼 */
+
+.box-slide-btn{
+
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:white;
+border:none;
+font-size:28px;
+cursor:pointer;
+padding:10px 14px;
+border-radius:8px;
+box-shadow:0 2px 6px rgba(0,0,0,0.15);
+
+}
+
+.box-slide-btn.left{
+
+left:-10px;
+
+}
+
+.box-slide-btn.right{
+
+right:-10px;
+
+}
+
+
+/* 모바일 */
+
+@media (max-width:768px){
+
+.box-slide-card{
+
+min-width:100%;
+
+}
+
+}
+
+/* =========================
    MOBILE
 ========================= */
 

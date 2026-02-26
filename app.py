@@ -12,15 +12,16 @@ def get_kst_time():
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-UPLOAD_FOLDER = "/data/uploads"
+UPLOAD_FOLDER = "uploads"
 DB_PATH = "database.db"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# 카테고리
+# 폴더 생성
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 CATEGORIES = ["apartment", "house", "store"]
 
-# 폴더 생성
 for category in CATEGORIES:
     os.makedirs(os.path.join(UPLOAD_FOLDER, category), exist_ok=True)
 
