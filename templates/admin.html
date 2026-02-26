@@ -589,7 +589,7 @@ function showPreview(file){
         }
 
         cropper = new Cropper(img,{
-            aspectRatio:4/3,
+            aspectRatio:16/9,
             viewMode:1,
             autoCropArea:1
         });
@@ -689,16 +689,61 @@ uploadForm.addEventListener("submit", function(e){
     // 완료
     xhr.onload = function(){
 
-        bar.style.width = "100%";
-        percent.innerText = "업로드 완료";
+    bar.style.width = "100%";
+    percent.innerText = "업로드 완료";
 
-        // 자동 새로고침
-        setTimeout(function(){
-            location.reload();
-        }, 500);
+    fetch("/admin_panel?ajax=1")
+    .then(res => res.json())
+    .then(data => {
 
-    };
+        const container =
+        document.getElementById("image-container");
 
+        const card = document.createElement("div");
+
+        card.style.marginBottom = "20px";
+        card.style.background = "white";
+        card.style.padding = "12px";
+        card.style.borderRadius = "10px";
+        card.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
+        card.style.width = "260px";
+
+        // 카테고리 한글 변환
+        let categoryText = "";
+
+        if(data.image.category == "apartment")
+            categoryText = "아파트";
+        else if(data.image.category == "house")
+            categoryText = "주택";
+        else if(data.image.category == "store")
+            categoryText = "상가";
+
+        card.innerHTML = `
+            <img src="${data.image.url}"
+            width="250"
+            style="cursor:pointer;border-radius:8px;"
+            onclick="openAdminModal('${data.image.url}')">
+
+            <br><br>
+
+            카테고리: ${categoryText}
+
+            <br><br>
+
+            <div style="color:#10b981;font-size:13px;">
+            방금 업로드됨
+            </div>
+        `;
+
+        container.prepend(card);
+
+        // progress 초기화
+        bar.style.width = "0%";
+        percent.innerText = "0%";
+
+    });
+
+};
 
     // 전송
     xhr.send(formData);
