@@ -226,7 +226,29 @@ margin-bottom:15px;
 
 
 <br>
+<div style="margin-bottom:15px;">
 
+<button type="button" onclick="rotateLeft()" style="margin-right:5px;">
+↺ 왼쪽 회전
+</button>
+
+<button type="button" onclick="rotateRight()" style="margin-right:5px;">
+↻ 오른쪽 회전
+</button>
+
+<button type="button" onclick="zoomIn()" style="margin-right:5px;">
+＋ 확대
+</button>
+
+<button type="button" onclick="zoomOut()" style="margin-right:5px;">
+－ 축소
+</button>
+
+<button type="button" onclick="resetCrop()" style="margin-right:5px;">
+⟲ 초기화
+</button>
+
+</div>
 
 <!-- 카테고리 -->
 <select name="category"
@@ -767,6 +789,46 @@ function cropImage(){
         scalable:true,
         cropBoxResizable:true
     });
+
+}
+
+function rotateLeft(){
+
+    if(!cropper) return;
+
+    cropper.rotate(-90);
+
+}
+
+function rotateRight(){
+
+    if(!cropper) return;
+
+    cropper.rotate(90);
+
+}
+
+function zoomIn(){
+
+    if(!cropper) return;
+
+    cropper.zoom(0.1);
+
+}
+
+function zoomOut(){
+
+    if(!cropper) return;
+
+    cropper.zoom(-0.1);
+
+}
+
+function resetCrop(){
+
+    if(!cropper) return;
+
+    cropper.reset();
 
 }
 
