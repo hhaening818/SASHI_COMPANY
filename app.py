@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from flask import send_from_directory
+from flask import jsonify
 def get_kst_time():
     return datetime.utcnow() + timedelta(hours=9)
 
@@ -473,12 +474,12 @@ def admin_panel():
 
         conn.close()
 
-        return {
+        return jsonify({
             "image": {
                 "url": url_for("uploaded_file", category=row[1], filename=row[0]),
                 "category": row[1]
             }
-        }
+        })
     conn.close()
 
     # ======================
