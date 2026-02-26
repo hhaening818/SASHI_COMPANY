@@ -705,6 +705,34 @@ uploadForm.addEventListener("submit", function(e){
 
 });
 
+function cropImage(){
+
+    if(!cropper){
+        alert("이미지를 먼저 선택하세요.");
+        return;
+    }
+
+    // crop된 canvas 생성
+    const canvas = cropper.getCroppedCanvas({
+        width:1600,
+        height:900
+    });
+
+    // preview 이미지 변경
+    const preview = document.getElementById("preview");
+    preview.src = canvas.toDataURL("image/jpeg", 0.9);
+
+    // cropper 다시 생성 (preview 기준)
+    cropper.destroy();
+
+    cropper = new Cropper(preview,{
+        aspectRatio:16/9,
+        viewMode:1,
+        autoCropArea:1
+    });
+
+}
+
 </script>
 {% endblock %}
 
