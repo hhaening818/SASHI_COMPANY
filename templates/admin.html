@@ -600,18 +600,6 @@ function showPreview(file){
 
 }
 
-
-// 카테고리 변경 시 비율 유지
-document.querySelector("select[name='category']")
-.addEventListener("change", function(){
-
-    if(!cropper) return;
-
-    cropper.setAspectRatio(4/3);
-
-});
-
-
 // 업로드 처리
 const uploadForm = document.getElementById("uploadForm");
 
@@ -770,10 +758,14 @@ function cropImage(){
     // cropper 다시 생성 (preview 기준)
     cropper.destroy();
 
-    cropper = new Cropper(preview,{
+    cropper = new Cropper(img,{
         aspectRatio:16/9,
         viewMode:1,
-        autoCropArea:1
+        autoCropArea:1,
+        movable:true,
+        zoomable:true,
+        scalable:true,
+        cropBoxResizable:true
     });
 
 }
