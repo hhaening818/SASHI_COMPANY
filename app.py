@@ -655,7 +655,7 @@ from flask import send_from_directory
 @app.route("/uploads/<category>/<filename>")
 def uploaded_file(category, filename):
     return send_from_directory(
-        os.path.join("/data/uploads", category),
+        os.path.join(app.config["UPLOAD_FOLDER"], category),
         filename
     )
 

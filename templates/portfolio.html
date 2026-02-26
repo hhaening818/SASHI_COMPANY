@@ -126,7 +126,7 @@ const imageDataElement = document.getElementById("image-data");
 
 imageList = JSON.parse(imageDataElement.dataset.images);
 
-imageList = imageList.map(img => "/static/uploads/" + img);
+imageList = imageList.map(img => "/uploads/" + img);
 
 filterSelection("all");
 
