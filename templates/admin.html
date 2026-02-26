@@ -431,97 +431,44 @@ font-size:13px;
 
 function openAdminModal(src){
 
-const modal = document.getElementById("admin-modal");
+    const modal = document.getElementById("admin-modal");
+    const modalImg = document.getElementById("admin-modal-img");
 
-const modalImg = document.getElementById("admin-modal-img");
-
-modal.classList.add("show");
-
-modalImg.src = src;
+    modal.classList.add("show");
+    modalImg.src = src;
 
 }
 
 function closeAdminModal(){
 
-document.getElementById("admin-modal").classList.remove("show");
+    document.getElementById("admin-modal").classList.remove("show");
 
 }
 
 </script>
+
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 
+
 <script>
 
 let cropper;
 
-document.getElementById("fileInput").addEventListener("change", function(e){
-
-    const file = e.target.files[0];
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-        const img = document.getElementById("preview");
-
-        img.src = event.target.result;
-        img.style.display = "block";
-
-        if(cropper){
-            cropper.destroy();
-        }
-
-        const category =
-            document.querySelector("select[name='category']").value;
-
-        let ratio = 4/3;
-
-        cropper = new Cropper(img, {
-
-            aspectRatio: ratio,   // ⭐ 여기 중요
-            viewMode: 1,
-            autoCropArea: 1
-
-        });
-    };
-
-    reader.readAsDataURL(file);
-
-});
-
-
-function cropImage(){
-
-    const canvas = cropper.getCroppedCanvas({
-
-        width:1600,
-        height:900
-
-    });
-
-    const base64 = canvas.toDataURL("image/jpeg", 0.9);
-
-    document.getElementById("cropped_image").value = base64;
-
-    alert("자르기 완료! 업로드 버튼을 누르세요.");
-
-}
-
-</script>
-
-<script>
-
 const dropArea = document.getElementById("drop-area");
 const fileInput = document.getElementById("fileInput");
 
+
+// 클릭 업로드
 dropArea.addEventListener("click", () => {
     fileInput.click();
 });
 
+
+// 드래그
 dropArea.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropArea.style.background = "#e0f2fe";
@@ -548,17 +495,19 @@ dropArea.addEventListener("drop", (e) => {
 });
 
 
-fileInput.addEventListener("change", function() {
+// 파일 선택
+fileInput.addEventListener("change", function(e){
 
-    const files = this.files;
+    const file = e.target.files[0];
 
-    if(files.length === 0) return;
-
-    showPreview(files[0]); // 첫번째만 preview
+    if(file){
+        showPreview(file);
+    }
 
 });
 
 
+// 미리보기 + cropper
 function showPreview(file){
 
     const reader = new FileReader();
@@ -568,20 +517,14 @@ function showPreview(file){
         const img = document.getElementById("preview");
 
         img.src = e.target.result;
-
         img.style.display = "block";
 
         if(cropper){
             cropper.destroy();
         }
 
-        const category =
-            document.querySelector("select[name='category']").value;
-
-        let ratio = 4/3;
-
         cropper = new Cropper(img,{
-            aspectRatio: ratio,
+            aspectRatio:4/3,
             viewMode:1,
             autoCropArea:1
         });
@@ -592,21 +535,25 @@ function showPreview(file){
 
 }
 
+
+// 카테고리 변경 시 비율 유지
 document.querySelector("select[name='category']")
 .addEventListener("change", function(){
 
     if(!cropper) return;
 
-    let ratio = 4/3;
-
-    cropper.setAspectRatio(ratio);
+    cropper.setAspectRatio(4/3);
 
 });
 
+
+// 업로드 처리
 const uploadForm = document.getElementById("uploadForm");
+
 const progress = document.getElementById("upload-progress");
 const bar = document.getElementById("upload-bar");
 const percent = document.getElementById("upload-percent");
+
 
 uploadForm.addEventListener("submit", function(e){
 
@@ -627,14 +574,17 @@ uploadForm.addEventListener("submit", function(e){
     const formData = new FormData();
 
     formData.append("cropped_image", base64);
+
     formData.append(
         "category",
         document.querySelector("select[name='category']").value
     );
+
     formData.append(
         "description",
         document.querySelector("input[name='description']").value
     );
+
 
     const xhr = new XMLHttpRequest();
 
@@ -643,6 +593,8 @@ uploadForm.addEventListener("submit", function(e){
     progress.style.display = "block";
     percent.style.display = "block";
 
+
+    // 진행률
     xhr.upload.onprogress = function(e){
 
         if(e.lengthComputable){
@@ -650,59 +602,32 @@ uploadForm.addEventListener("submit", function(e){
             const p = Math.round((e.loaded / e.total) * 100);
 
             bar.style.width = p + "%";
-
             percent.innerText = p + "%";
 
         }
 
     };
 
+
+    // 완료
     xhr.onload = function(){
 
         bar.style.width = "100%";
         percent.innerText = "업로드 완료";
 
-        fetch("/admin_panel?ajax=1")
-        .then(res => res.json())
-        .then(data => {
-
-            const container =
-                document.getElementById("image-container");
-
-            const img = data.image;
-
-            const html = `
-            <div style="
-            margin-bottom:20px;
-            background:white;
-            padding:12px;
-            border-radius:10px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.08);
-            width:260px;
-            ">
-
-            <img src="${img.url}?t=${Date.now()}"
-            width="250"
-            style="border-radius:8px;">
-
-            <div style="margin-top:5px;">
-            카테고리: ${img.category}
-            </div>
-
-            </div>
-            `;
-
-            container.insertAdjacentHTML("afterbegin", html);
-
-        });
+        // 자동 새로고침
+        setTimeout(function(){
+            location.reload();
+        }, 500);
 
     };
 
+
+    // 전송
     xhr.send(formData);
 
 });
 
 </script>
-
 {% endblock %}
 
