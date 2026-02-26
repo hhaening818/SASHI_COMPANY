@@ -460,12 +460,32 @@ def admin_panel():
     c.execute("SELECT COUNT(*) FROM contact WHERE status='미완료'")
     pending_contacts = c.fetchone()[0]
     
+    # AJAX 요청 처리
+    if request.args.get("ajax") == "1":
+
+        c.execute("""
+            SELECT filename, category
+            FROM portfolio
+            ORDER BY id DESC
+            LIMIT 1
+        """)
+
+        row = c.fetchone()
+
+        conn.close()
+
+        return {
+            "image": {
+                "url": f"/uploads/{row[1]}/{row[0]}",
+                "category": row[1]
+            }
+        }
     conn.close()
 
     # ======================
     # 렌더링
     # ======================
-
+    
     return render_template(
         "admin.html",
         images=images,
