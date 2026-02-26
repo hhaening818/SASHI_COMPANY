@@ -238,7 +238,12 @@ background:white;
 margin-bottom:15px;
 ">
 {% for category in categories %}
-<option value="{{ category }}">{{ category }}</option>
+<option value="{{ category }}">
+{% if category == "apartment" %}아파트
+{% elif category == "house" %}주택
+{% elif category == "store" %}상가
+{% endif %}
+</option>
 {% endfor %}
 </select>
 
@@ -271,24 +276,6 @@ border-radius:6px;
 border:1px solid #ddd;
 margin-bottom:10px;
 ">
-
-<!-- 시공 종류 -->
-<select name="type"
-style="
-width:100%;
-max-width:400px;
-padding:10px;
-border-radius:6px;
-border:1px solid #ddd;
-margin-bottom:15px;
-">
-
-<option value="아파트">아파트</option>
-<option value="주택">주택</option>
-<option value="상가">상가</option>
-
-</select>
-
 
 <br>
 
@@ -393,7 +380,11 @@ font-size:13px;
 <div style="color:red;">대표 이미지</div>
 {% endif %}
 
-카테고리: {{ img[2] }}
+카테고리:
+{% if img[2] == "apartment" %}아파트
+{% elif img[2] == "house" %}주택
+{% elif img[2] == "store" %}상가
+{% endif %}
 
 {% if img[5] %}
 <br>
@@ -660,8 +651,11 @@ uploadForm.addEventListener("submit", function(e){
     const brand =
     uploadForm.querySelector("input[name='brand']").value;
 
+    const categorySelect =
+    uploadForm.querySelector("select[name='category']");
+
     const type =
-    uploadForm.querySelector("select[name='type']").value;
+    categorySelect.options[categorySelect.selectedIndex].text;
 
     const description =
     location + "|" + brand + "|" + type;
