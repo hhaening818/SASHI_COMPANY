@@ -160,8 +160,6 @@ def home():
 
     main = c.fetchone()
 
-    main = c.fetchone()
-
     if main:
 
         hero_images.append(
@@ -187,8 +185,9 @@ def home():
 
         hero_images.append(
             url_for(
-                "static",
-                filename="uploads/" + row[1] + "/" + row[0]
+                "uploaded_file",
+                category=row[1],
+                filename=row[0]
             )
         )
 
@@ -382,7 +381,7 @@ def admin_panel():
 
             header, data = cropped.split(",")
 
-            filename = f"crop_{int(time.time())}.jpg"
+            filename = f"crop_{int(time.time())}_{random.randint(1000,9999)}.jpg"
 
             save_path = os.path.join(
                 app.config["UPLOAD_FOLDER"],
@@ -476,7 +475,7 @@ def admin_panel():
 
         return {
             "image": {
-                "url": f"/uploads/{row[1]}/{row[0]}",
+                "url": url_for("uploaded_file", category=row[1], filename=row[0]),
                 "category": row[1]
             }
         }

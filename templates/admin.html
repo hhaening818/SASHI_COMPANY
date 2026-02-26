@@ -478,7 +478,7 @@ document.getElementById("fileInput").addEventListener("change", function(e){
         const category =
             document.querySelector("select[name='category']").value;
 
-        let ratio = category === "hero" ? 16/9 : 4/3;
+        let ratio = 4/3;
 
         cropper = new Cropper(img, {
 
@@ -578,7 +578,7 @@ function showPreview(file){
         const category =
             document.querySelector("select[name='category']").value;
 
-        let ratio = category === "hero" ? 16/9 : 4/3;
+        let ratio = 4/3;
 
         cropper = new Cropper(img,{
             aspectRatio: ratio,
@@ -597,7 +597,7 @@ document.querySelector("select[name='category']")
 
     if(!cropper) return;
 
-    let ratio = this.value === "hero" ? 16/9 : 4/3;
+    let ratio = 4/3;
 
     cropper.setAspectRatio(ratio);
 
@@ -681,7 +681,7 @@ uploadForm.addEventListener("submit", function(e){
             width:260px;
             ">
 
-            <img src="${img.url}"
+            <img src="${img.url}?t=${Date.now()}"
             width="250"
             style="border-radius:8px;">
 
