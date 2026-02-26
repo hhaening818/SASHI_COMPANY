@@ -556,7 +556,11 @@ def edit_description(id):
     if not session.get("admin"):
         return redirect("/gunjin_admin_7137")
 
-    description = request.form.get("description", "")
+    location = request.form.get("location", "")
+    brand = request.form.get("brand", "")
+    type_ = request.form.get("type", "")
+
+    description = f"{location}|{brand}|{type_}"
 
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()

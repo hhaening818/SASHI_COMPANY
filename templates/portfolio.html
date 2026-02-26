@@ -21,6 +21,8 @@
 
 </div>
 
+
+<!-- 이미지 데이터 -->
 <div id="image-data"
 data-images='[
 {% for img in images %}
@@ -29,6 +31,8 @@ data-images='[
 ]'>
 </div>
 
+
+<!-- 그리드 시작 -->
 <div class="portfolio-grid">
 
 {% for img in images %}
@@ -41,11 +45,43 @@ data-images='[
 
 <img src="{{ img_url }}">
 
+
+<!-- hover 정보 -->
+<div class="portfolio-info">
+
+<div class="portfolio-category">
+{{ img[2] }}
+</div>
+
+{% if img[3] %}
+{% set parts = img[3].split('|') %}
+{% else %}
+{% set parts = ["대구", "건진창호", "시공"] %}
+{% endif %}
+
+<div class="portfolio-location">
+{{ parts[0] }}
+</div>
+
+<div class="portfolio-brand">
+{{ parts[1] }}
+</div>
+
+<div class="portfolio-type">
+{{ parts[2] }}
+</div>
+
+</div>
+
+
+<!-- overlay -->
 <div class="portfolio-overlay">
 <span>확대보기</span>
 </div>
 
-<div style="padding:10px; background:white; font-size:14px;">
+
+<!-- 설명 -->
+<div class="portfolio-desc">
 {% if img[3] %}
 {{ img[3] }}
 {% else %}
@@ -58,10 +94,13 @@ data-images='[
 {% endfor %}
 
 </div>
+<!-- 그리드 끝 -->
 
 </section>
 
 
+
+<!-- MODAL -->
 <div id="modal" class="modal">
 
 <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -73,6 +112,8 @@ data-images='[
 <span class="modal-next" onclick="nextImage()">&#10095;</span>
 
 </div>
+
+
 
 <script>
 
@@ -87,7 +128,7 @@ imageList = JSON.parse(imageDataElement.dataset.images);
 
 imageList = imageList.map(img => "/static/uploads/" + img);
 
-filterSelection("all"); // 추가
+filterSelection("all");
 
 }
 
@@ -138,7 +179,6 @@ document.getElementById("modal-img").src=imageList[currentIndex];
 }
 
 
-/* ✅ 이거 추가 */
 function filterSelection(category){
 
 let cards=document.getElementsByClassName("portfolio-card");
@@ -146,13 +186,9 @@ let cards=document.getElementsByClassName("portfolio-card");
 for(let i=0;i<cards.length;i++){
 
 if(category=="all" || cards[i].classList.contains(category)){
-
 cards[i].style.display="";
-
 }else{
-
 cards[i].style.display="none";
-
 }
 
 }

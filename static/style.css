@@ -3,6 +3,11 @@ margin:0;
 font-family:Arial;
 }
 
+
+/* =========================
+   HEADER
+========================= */
+
 .header{
 display:flex;
 justify-content:space-between;
@@ -22,223 +27,195 @@ text-decoration:none;
 color:black;
 }
 
-.slider{
 
-width:100%;
-height:500px;
-overflow:hidden;
-position:relative;
+/* =========================
+   HERO / SLIDER
+========================= */
 
-}
-
-.slider img{
-
-width:100%;
-height:500px;
-object-fit:cover;
-position:absolute;
-animation:slide 20s infinite;
-
-}
-
-.slider img:nth-child(1){animation-delay:0s;}
-.slider img:nth-child(2){animation-delay:5s;}
-.slider img:nth-child(3){animation-delay:10s;}
-.slider img:nth-child(4){animation-delay:15s;}
-
-@keyframes slide{
-
-0%{opacity:0;}
-5%{opacity:1;}
-25%{opacity:1;}
-30%{opacity:0;}
-100%{opacity:0;}
-
-}
-
-.contact-buttons{
-
-position:fixed;
-right:0;
-bottom:100px;
-
-display:flex;
-flex-direction:column;
-
-z-index:999;
-
-}
-
-/* 공통 버튼 */
-.call-btn,
-.kakao-btn{
-
-position:relative;
-
-right:-115px; /* 평소에는 오른쪽에 숨김 */
-
-width:170px;
-
-padding:16px 20px;
-
-margin:5px 0;
-
-text-decoration:none;
-
-font-size:14px;
-
-font-weight:600;
-
-letter-spacing:0.5px;
-
-border-radius:0;
-
-transition:all 0.25s ease;
-
-}
-
-/* hover 시 슬라이드 */
-.call-btn:hover,
-.kakao-btn:hover{
-
-right:0;
-
-}
-
-/* 전화 버튼 — 차가운 블루그레이 */
-.call-btn{
-
-background:#1c2730;
-
-border-left:5px solid #4a90a4;
-
-}
-
-.call-btn:hover{
-
-background:#24323d;
-
-border-left:5px solid #6bb3c9;
-
-}
-
-/* 카카오 — 노랑 포인트 */
-.kakao-btn{
-
-background:#2b2b2b;
-
-border-left:5px solid #FEE500;
-
-color:#FEE500;
-
-}
-
-.kakao-btn:hover{
-
-background:#3a3a3a;
-
-border-left:5px solid #ffeb3b;
-
-color:#fff176;
-
-}
-
-.hero-logo{
-
-position:absolute;
-
-top:50%;
-
-left:50%;
-
-transform:translate(-50%, -50%);
-
-z-index:10;
-
-}
-
-.hero-logo img{
-
-width:400px;
-
-max-width:80%;
-
-}
-
-/* 히어로 */
 .hero{
-    height:500px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    aspect-ratio:16/9;
-    overflow:hidden;
+position:relative;
+width:100%;
+height:500px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+.hero-slider{
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+}
+
+.hero-slide{
+position:absolute;
+width:100%;
+height:100%;
+opacity:0;
+transition:opacity 1s ease-in-out;
+background-size:cover;
+background-position:center;
+}
+
+.hero-slide.active{
+opacity:1;
 }
 
 .hero-overlay{
-    background:rgba(0,0,0,0.5);
-    padding:40px;
-    color:white;
-    text-align:center;
+position:relative;
+z-index:5;
+height:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+color:white;
+background:rgba(0,0,0,0.35);
+text-align:center;
+padding:40px;
 }
 
 .hero h1{
-    font-size:40px;
+font-size:40px;
 }
 
-.hero p{
-    margin:15px 0;
+.hero-logo{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%, -50%);
+z-index:10;
 }
 
-/* 시공사례 전체 */
+.hero-logo img{
+width:400px;
+max-width:80%;
+}
+
+
+/* =========================
+   CONTACT FLOAT BUTTON
+========================= */
+
+.contact-buttons{
+position:fixed;
+right:0;
+bottom:100px;
+display:flex;
+flex-direction:column;
+z-index:999;
+}
+
+.call-btn,
+.kakao-btn{
+position:relative;
+right:-115px;
+width:170px;
+padding:16px 20px;
+margin:5px 0;
+text-decoration:none;
+font-size:14px;
+font-weight:600;
+letter-spacing:0.5px;
+transition:all 0.25s ease;
+}
+
+.call-btn:hover,
+.kakao-btn:hover{
+right:0;
+}
+
+.call-btn{
+background:#1c2730;
+border-left:5px solid #4a90a4;
+}
+
+.call-btn:hover{
+background:#24323d;
+border-left:5px solid #6bb3c9;
+}
+
+.kakao-btn{
+background:#2b2b2b;
+border-left:5px solid #FEE500;
+color:#FEE500;
+}
+
+.kakao-btn:hover{
+background:#3a3a3a;
+border-left:5px solid #ffeb3b;
+color:#fff176;
+}
+
+
+/* =========================
+   PORTFOLIO SECTION
+========================= */
+
 .portfolio-section{
 
 padding:80px 40px;
 
-background:#f4f6f8;
+background:linear-gradient(
+180deg,
+#f8fafc 0%,
+#eef2f6 100%
+);
 
 min-height:600px;
 
+animation:sectionFade 0.8s ease;
+
 }
 
-/* 헤더 */
+@keyframes sectionFade{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+
+/* =========================
+   PORTFOLIO HEADER
+========================= */
+
 .portfolio-header{
-
 text-align:center;
-
 margin-bottom:40px;
-
 }
 
 .portfolio-header h1{
-
 font-size:32px;
-
 color:#1c2730;
-
-
-
 }
 
 .portfolio-line{
-
 width:60px;
-
 height:3px;
-
 background:#4a90a4;
-
 margin:10px auto;
-
 }
 
 .portfolio-header p{
-
 color:#555;
-
 }
 
-/* 그리드 */
+
+/* =========================
+   PORTFOLIO GRID
+========================= */
+
 .portfolio-grid{
 
 display:grid;
@@ -249,7 +226,11 @@ gap:25px;
 
 }
 
-/* 카드 */
+
+/* =========================
+   PORTFOLIO CARD
+========================= */
+
 .portfolio-card{
 
 position:relative;
@@ -258,43 +239,119 @@ cursor:pointer;
 
 overflow:hidden;
 
-background:#000;
-/* 카드 그림자 추가 */
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
+border-radius:14px;
 
-transition:all 0.25s ease;
+background:white;
+
+transform-style:preserve-3d;
+
+opacity:0;
+
+transform:translateY(30px);
+
+animation:cardFadeIn 0.6s forwards;
+
+box-shadow:
+0 8px 20px rgba(0,0,0,0.08),
+0 2px 6px rgba(0,0,0,0.05);
+
+transition:
+transform 0.35s cubic-bezier(.2,.8,.2,1),
+box-shadow 0.35s;
 
 }
+
+@keyframes cardFadeIn{
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+
+/* 카드 shine 효과 */
+
+.portfolio-card::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+left:-120%;
+
+width:60%;
+height:100%;
+
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,0.5),
+transparent
+);
+
+transform:skewX(-25deg);
+
+transition:0.8s;
+
+pointer-events:none;
+
+}
+
+
+/* hover 상태 */
+
+.portfolio-card:hover{
+
+transform:
+translateY(-14px)
+scale(1.02)
+rotateX(2deg);
+
+box-shadow:
+0 30px 60px rgba(0,0,0,0.18),
+0 10px 20px rgba(0,0,0,0.12);
+
+}
+
+.portfolio-card:hover::before{
+left:140%;
+}
+
+
+/* =========================
+   PORTFOLIO IMAGE
+========================= */
 
 .portfolio-card img{
 
 width:100%;
 
-height:200px;
+height:240px;
 
 object-fit:cover;
 
-transition:transform 0.3s ease;
+transition:
+transform 0.6s cubic-bezier(.2,.8,.2,1),
+filter 0.6s;
 
 }
 
-/* hover 확대 */
 .portfolio-card:hover img{
 
-transform:scale(1.05);
+transform:scale(1.12);
+
+filter:brightness(0.85);
 
 }
 
-/* hover 시 카드 자체 상승 */
-.portfolio-card:hover{
 
-transform:translateY(-5px);
+/* =========================
+   OVERLAY
+========================= */
 
-box-shadow:0 12px 24px rgba(0,0,0,0.18);
-
-}
-
-/* overlay */
 .portfolio-overlay{
 
 position:absolute;
@@ -304,42 +361,82 @@ left:0;
 right:0;
 bottom:0;
 
-background:rgba(28,39,48,0.7);
+background:linear-gradient(
+to top,
+rgba(0,0,0,0.75) 0%,
+rgba(0,0,0,0.4) 40%,
+rgba(0,0,0,0.1) 70%,
+rgba(0,0,0,0) 100%
+);
 
 display:flex;
-
 align-items:center;
 justify-content:center;
 
 opacity:0;
 
-transition:0.3s;
-/* overlay 부드럽게 */
-backdrop-filter:blur(2px);
+transition:all 0.4s;
 
 }
 
 .portfolio-card:hover .portfolio-overlay{
-
 opacity:1;
-
 }
 
 .portfolio-overlay span{
 
 color:white;
 
-font-size:14px;
+font-size:18px;
 
-background:rgba(0,0,0,0.6);
+font-weight:600;
 
-border:1px solid rgba(255,255,255,0.6);
+letter-spacing:1px;
 
-padding:8px 16px;
+border-radius:30px;
+
+padding:10px 22px;
+
+background:rgba(255,255,255,0.15);
+
+backdrop-filter:blur(6px);
+
+transform:translateY(30px);
+
+transition:all 0.4s;
 
 }
 
-/* 모달 */
+.portfolio-card:hover .portfolio-overlay span{
+transform:translateY(0);
+}
+
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.portfolio-card div:last-child{
+
+padding:16px 18px;
+
+font-size:15px;
+
+font-weight:500;
+
+color:#1c2730;
+
+background:white;
+
+border-top:1px solid rgba(0,0,0,0.05);
+
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
 .modal{
 
 display:none;
@@ -359,276 +456,183 @@ align-items:center;
 
 z-index:9999;
 
-
-transition:opacity 0.25s ease;
-
 }
 
 .modal.show{
-
 display:flex;
-opacity:1;
-
 }
 
 .modal img{
-
 max-width:90%;
 max-height:90%;
-
 }
 
-/* 닫기 */
 .modal-close{
-
 position:absolute;
 top:20px;
 right:30px;
-
 color:white;
 font-size:40px;
-
 cursor:pointer;
-
 }
 
-/* 좌우 버튼 */
 .modal-prev,
 .modal-next{
-
 position:absolute;
-
 top:50%;
-
 color:white;
-
 font-size:50px;
-
 cursor:pointer;
-
 padding:20px;
-
-user-select:none;
-
 }
 
-.modal-prev{
-
-left:20px;
-
-}
-
-.modal-next{
-
-right:20px;
-
-}
+.modal-prev{left:20px;}
+.modal-next{right:20px;}
 
 .modal-prev:hover,
 .modal-next:hover{
-
 color:#4a90a4;
+}
+
+/* hover 시 표시되는 정보 */
+.portfolio-info{
+
+position:absolute;
+
+bottom:20px;
+left:20px;
+
+color:white;
+
+z-index:5;
+
+opacity:0;
+
+transform:translateY(20px);
+
+transition:all 0.4s;
 
 }
 
-.contact-form input,
-.contact-form textarea,
-.contact-form button{
 
-width:100%;
-box-sizing:border-box;
+/* hover 시 등장 */
+.portfolio-card:hover .portfolio-info{
 
-}
+opacity:1;
 
-.contact-form select{
-
-width:100%;
-padding:12px;
-margin-bottom:15px;
-border:1px solid #ddd;
-box-sizing:border-box;
+transform:translateY(0);
 
 }
 
-/* 홈 시공사례 미리보기 */
-.home-portfolio{
-    max-width:1200px;
-    margin:80px auto;
-    padding:0 20px;
+
+/* 카테고리 (아파트, 주택 등) */
+.portfolio-category{
+
+font-size:13px;
+
+background:rgba(255,255,255,0.2);
+
+padding:4px 10px;
+
+border-radius:20px;
+
+margin-bottom:8px;
+
+display:inline-block;
+
+backdrop-filter:blur(4px);
+
 }
 
-.home-portfolio-header{
-    text-align:center;
-    margin-bottom:40px;
+
+/* 제목 */
+.portfolio-title{
+
+font-size:20px;
+
+font-weight:700;
+
+text-shadow:0 2px 8px rgba(0,0,0,0.5);
+
 }
 
-.home-portfolio-header h2{
-    font-size:28px;
-    color:#1c2730;
-    margin-bottom:10px;
+.portfolio-info{
+
+position:absolute;
+
+bottom:20px;
+left:20px;
+
+z-index:5;
+
+color:white;
+
+opacity:0;
+
+transform:translateY(20px);
+
+transition:all 0.4s;
+
 }
 
-.home-portfolio-header p{
-    color:#666;
+.portfolio-card:hover .portfolio-info{
+
+opacity:1;
+
+transform:translateY(0);
+
 }
 
-.home-portfolio-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
-    gap:20px;
+
+/* 지역 */
+.portfolio-location{
+
+font-size:14px;
+
+opacity:0.9;
+
+margin-bottom:4px;
+
 }
 
-.home-portfolio-card{
-    overflow:hidden;
-    cursor:pointer;
-    background:#000;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    transition:all 0.25s ease;
+
+/* 브랜드 */
+.portfolio-brand{
+
+font-size:22px;
+
+font-weight:700;
+
+margin-bottom:4px;
+
 }
 
-.home-portfolio-card img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    transition:transform 0.3s ease;
+
+/* 시공 종류 */
+.portfolio-type{
+
+font-size:14px;
+
+background:rgba(255,255,255,0.2);
+
+display:inline-block;
+
+padding:4px 12px;
+
+border-radius:20px;
+
+backdrop-filter:blur(4px);
+
 }
 
-.home-portfolio-card:hover img{
-    transform:scale(1.05);
-}
+/* =========================
+   MOBILE
+========================= */
 
-.home-portfolio-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 12px 24px rgba(0,0,0,0.18);
-}
-
-.home-portfolio-more{
-    text-align:center;
-    margin-top:30px;
-}
-
-.home-portfolio-more a{
-    text-decoration:none;
-    color:#4a90a4;
-    font-weight:bold;
-}
-
-/* 홈 박스형 슬라이드 */
-.box-slide-section{
-    max-width:1200px;
-    margin:80px auto;
-    padding:0 20px;
-}
-
-.slide-title{
-    text-align:center;
-    font-size:28px;
-    margin-bottom:30px;
-    color:#1c2730;
-}
-
-.box-slide-wrapper{
-    position:relative;
-    overflow:hidden;
-}
-
-.box-slide-container{
-    display:flex;
-    transition:transform 0.4s ease;
-}
-
-.box-slide-card{
-    min-width:33.333%;
-    padding:10px;
-    box-sizing:border-box;
-}
-
-.box-slide-card img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    border-radius:8px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    transition:0.3s;
-}
-
-.box-slide-card img:hover{
-    transform:scale(1.05);
-}
-
-/* 좌우 버튼 */
-.box-slide-btn{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    background:rgba(0,0,0,0.5);
-    color:white;
-    border:none;
-    font-size:30px;
-    padding:10px 15px;
-    cursor:pointer;
-    z-index:10;
-}
-
-.box-slide-btn.left{
-    left:0;
-}
-
-.box-slide-btn.right{
-    right:0;
-}
-
-/* HERO 랜덤 슬라이드 */
-.hero{
-    position:relative;
-    width:100%;
-    height:500px;
-    overflow:hidden;
-}
-
-.hero-slider{
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-}
-
-.hero-slide{
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    opacity:0;
-    transition:opacity 1s ease-in-out;
-    background-size:cover;
-    background-position:center;
-}
-
-.hero-slide.active{
-    opacity:1;
-}
-
-/* overlay는 위에 표시 */
-.hero-overlay{
-    position:relative;
-    z-index:5;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    background:rgba(0,0,0,0.35);
-}
-
-/* 모바일 최적화 */
 @media (max-width:768px){
 
 .portfolio-section{
-
 padding:60px 15px;
-
 }
+
 }

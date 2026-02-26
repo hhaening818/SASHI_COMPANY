@@ -246,10 +246,34 @@ margin-bottom:15px;
 <br>
 
 
-<!-- 설명 -->
+<!-- 지역 -->
 <input type="text"
-name="description"
-placeholder="예: 수성구 아파트 KCC 창호 교체"
+name="location"
+placeholder="지역 (예: 대구 수성구)"
+style="
+width:100%;
+max-width:400px;
+padding:10px;
+border-radius:6px;
+border:1px solid #ddd;
+margin-bottom:10px;
+">
+
+<!-- 브랜드 -->
+<input type="text"
+name="brand"
+placeholder="브랜드 (예: LX Z:IN 또는 KCC)"
+style="
+width:100%;
+max-width:400px;
+padding:10px;
+border-radius:6px;
+border:1px solid #ddd;
+margin-bottom:10px;
+">
+
+<!-- 시공 종류 -->
+<select name="type"
 style="
 width:100%;
 max-width:400px;
@@ -258,6 +282,12 @@ border-radius:6px;
 border:1px solid #ddd;
 margin-bottom:15px;
 ">
+
+<option value="아파트">아파트</option>
+<option value="주택">주택</option>
+<option value="상가">상가</option>
+
+</select>
 
 
 <br>
@@ -374,11 +404,55 @@ font-size:13px;
 
 <form method="POST" action="/edit_description/{{ img[0] }}">
 
+{% if img[3] %}
+{% set parts = img[3].split('|') %}
+
+지역:<br>
 <input type="text"
-name="description"
-value="{{ img[3] if img[3] else '' }}"
-placeholder="설명 입력"
-style="width:250px; padding:5px;">
+name="location"
+value="{{ parts[0] }}"
+style="width:250px; padding:5px; margin-bottom:5px;">
+
+<br>
+
+브랜드:<br>
+<input type="text"
+name="brand"
+value="{{ parts[1] }}"
+style="width:250px; padding:5px; margin-bottom:5px;">
+
+<br>
+
+시공:<br>
+<input type="text"
+name="type"
+value="{{ parts[2] }}"
+style="width:250px; padding:5px; margin-bottom:5px;">
+
+{% else %}
+
+지역:<br>
+<input type="text"
+name="location"
+style="width:250px; padding:5px; margin-bottom:5px;">
+
+<br>
+
+브랜드:<br>
+<input type="text"
+name="brand"
+style="width:250px; padding:5px; margin-bottom:5px;">
+
+<br>
+
+시공:<br>
+<input type="text"
+name="type"
+style="width:250px; padding:5px; margin-bottom:5px;">
+
+{% endif %}
+
+<br>
 
 <button type="submit"
 style="
@@ -580,10 +654,19 @@ uploadForm.addEventListener("submit", function(e){
         document.querySelector("select[name='category']").value
     );
 
-    formData.append(
-        "description",
-        document.querySelector("input[name='description']").value
-    );
+    const location =
+    document.querySelector("input[name='location']").value;
+
+    const brand =
+    document.querySelector("input[name='brand']").value;
+
+    const type =
+    document.querySelector("select[name='type']").value;
+
+    const description =
+    location + "|" + brand + "|" + type;
+
+    formData.append("description", description);
 
 
     const xhr = new XMLHttpRequest();
