@@ -11,6 +11,7 @@ def get_kst_time():
 
 app = Flask(__name__)
 app.secret_key = "secret123"
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
 UPLOAD_FOLDER = "uploads"
 DB_PATH = "database.db"

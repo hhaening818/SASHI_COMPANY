@@ -770,10 +770,20 @@ function loadImage(index){
         }
 
         // 새 cropper 생성
-        cropper = new Cropper(img,{
+       cropper = new Cropper(img,{
             aspectRatio:16/9,
             viewMode:1,
-            autoCropArea:1
+            autoCropArea:1,
+            ready(){
+
+                // cropper 준비 완료 후 업로드 시작
+                if(uploading){
+                    setTimeout(()=>{
+                        uploadNext();
+                    }, 100);
+                }
+
+            }
         });
 
     };
@@ -784,18 +794,38 @@ function loadImage(index){
 
 function uploadCurrentImage(){
 
-    if(uploading) return;   // ✅ 추가
-
     if(files.length === 0){
         alert("이미지를 선택하세요.");
         return;
     }
 
+    currentIndex = 0;
+
+    uploading = true;
+
+    uploadNext();
+}
+
+function uploadNext(){
+
     if(currentIndex >= files.length){
+
+        statusText.innerText = "전체 업로드 완료 ✔";
+
+        setTimeout(()=>{
+            window.location.reload();
+        }, 800);
+
         return;
     }
 
-    uploading = true;  // ✅ 추가
+    const file = files[currentIndex];
+
+    statusText.innerText =
+    "업로드 중: " +
+    (currentIndex+1) + "/" +
+    files.length +
+    " (" + file.name + ")";
 
     let base64;
 
@@ -810,8 +840,6 @@ function uploadCurrentImage(){
 
     }else{
 
-        const file = files[currentIndex];
-
         const reader = new FileReader();
 
         reader.onload = function(e){
@@ -824,7 +852,6 @@ function uploadCurrentImage(){
     }
 
     sendToServer(base64);
-
 }
 
 function sendToServer(base64){
@@ -908,12 +935,7 @@ function sendToServer(base64){
 
             if(currentIndex < files.length){
 
-                uploading = false;
                 loadImage(currentIndex);
-
-                setTimeout(()=>{
-                    uploadCurrentImage();
-                }, 200);
 
             }else{
 
@@ -937,7 +959,10 @@ function sendToServer(base64){
 
                 uploading = false;
                 xhrCurrent = null;
-                location.reload();
+
+                setTimeout(()=>{
+                    window.location.reload();
+                }, 800);
 
             }
 
