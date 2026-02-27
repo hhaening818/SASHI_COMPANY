@@ -849,15 +849,13 @@ function sendToServer(base64){
     // ✅ 업로드 완료
     xhr.onload = function(){
 
-        bar.style.width = "100%";
-        percent.innerText = "완료";
+    bar.style.width = "100%";
+    percent.innerText = "완료";
 
-        setTimeout(()=>{
-            progress.style.display = "none";
-            percent.style.display = "none";
-            bar.style.width = "0%";
-        },500);
+    setTimeout(()=>{
 
+        bar.style.width = "0%";
+        percent.innerText = "0%";
 
         currentIndex++;
 
@@ -866,6 +864,9 @@ function sendToServer(base64){
             loadImage(currentIndex);
 
         }else{
+
+            progress.style.display = "none";
+            percent.style.display = "none";
 
             alert("모든 이미지 업로드 완료");
 
@@ -879,12 +880,9 @@ function sendToServer(base64){
 
         }
 
-    };
+    }, 300);
 
-
-    xhr.send(formData);
-
-}
+};
 
 function updateCounter(){
 
