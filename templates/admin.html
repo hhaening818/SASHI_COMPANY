@@ -882,7 +882,9 @@ function sendToServer(base64){
 
                 statusText.innerText =
                 "전체 업로드 완료 ✔";
-
+ 
+                cancelBtn.style.display = "none";
+                
                 setTimeout(()=>{
                     statusText.style.display = "none";
                 },1500);
