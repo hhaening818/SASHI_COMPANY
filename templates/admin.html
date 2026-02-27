@@ -745,31 +745,15 @@ function loadImage(index){
         img.src = e.target.result;
         img.style.display = "block";
 
+        // 카운터 업데이트
+        updateCounter();
+
+        // 기존 cropper 제거
         if(cropper){
             cropper.destroy();
         }
 
-        cropper = new Cropper(img,{
-            aspectRatio:16/9,
-            viewMode:1,
-            autoCropArea:1
-        });
-
-    };
-
-    reader.onload = function(e){
-
-        const img = document.getElementById("preview");
-
-        img.src = e.target.result;
-        img.style.display = "block";
-
-        updateCounter();   // ⭐ 이 줄 추가
-
-        if(cropper){
-            cropper.destroy();
-        }
-
+        // 새 cropper 생성
         cropper = new Cropper(img,{
             aspectRatio:16/9,
             viewMode:1,
