@@ -194,7 +194,18 @@ style="display:none;">
 
 
 <!-- 미리보기 -->
-<div style="margin-bottom:15px;">
+<div style="margin-bottom:10px;">
+
+<div id="image-counter"
+style="
+font-size:14px;
+font-weight:bold;
+color:#374151;
+margin-bottom:6px;
+display:none;
+">
+1 / 1
+</div>
 
 <img id="preview"
 style="
@@ -746,6 +757,27 @@ function loadImage(index){
 
     };
 
+    reader.onload = function(e){
+
+        const img = document.getElementById("preview");
+
+        img.src = e.target.result;
+        img.style.display = "block";
+
+        updateCounter();   // ⭐ 이 줄 추가
+
+        if(cropper){
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(img,{
+            aspectRatio:16/9,
+            viewMode:1,
+            autoCropArea:1
+        });
+
+    };
+
     reader.readAsDataURL(file);
 
 }
@@ -805,12 +837,32 @@ function uploadCurrentImage(){
             currentIndex = 0;
 
             document.getElementById("preview").style.display = "none";
+            document.getElementById("image-counter").style.display = "none";
 
             location.reload();
 
         }
-
     });
+
+}
+
+function updateCounter(){
+
+    const counter =
+    document.getElementById("image-counter");
+
+    if(files.length > 0){
+
+        counter.style.display = "block";
+
+        counter.innerText =
+        (currentIndex + 1) + " / " + files.length;
+
+    }else{
+
+        counter.style.display = "none";
+
+    }
 
 }
 </script>
