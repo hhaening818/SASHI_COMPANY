@@ -229,11 +229,11 @@ style="background:#6366f1; color:white; padding:10px 18px; border:none; border-r
 
 <br><br>
 
-<!-- 실제 업로드 버튼 -->
+<!-- 업로드 버튼 -->
 <button type="button"
-onclick="cropImage()"
-style="background:#6366f1; color:white; padding:10px 18px; border:none; border-radius:6px;">
-✂ 자르기 적용 및 업로드
+onclick="uploadCurrentImage()"
+style="background:#10b981; color:white; padding:10px 18px; border:none; border-radius:6px;">
+⬆ 업로드
 </button>
 
 
@@ -312,22 +312,6 @@ margin-bottom:10px;
 ">
 
 <br>
-
-
-<!-- 업로드 버튼 -->
-<button type="submit"
-style="
-background:#10b981;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:6px;
-cursor:pointer;
-font-size:15px;
-font-weight:bold;
-">
-⬆ 업로드
-</button>
 
 <!-- 진행바 -->
 <div id="upload-progress"
