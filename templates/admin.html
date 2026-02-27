@@ -937,6 +937,11 @@ function sendToServer(base64){
 
                 loadImage(currentIndex);
 
+                // ⭐ 이 줄 추가
+                setTimeout(()=>{
+                    uploadNext();
+                }, 150);
+
             }else{
 
                 progress.style.display = "none";
