@@ -194,7 +194,7 @@ style="display:none;">
 
 
 <!-- 미리보기 -->
-<div style="margin-bottom:10px;">
+<div style="margin-bottom:15px; text-align:center;">
 
 <div id="image-counter"
 style="
@@ -213,62 +213,105 @@ max-width:400px;
 display:none;
 border-radius:8px;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
+margin:auto;
 ">
 
 </div>
 
 
-<!-- 자르기 -->
+<!-- ===== 편집 버튼 그룹 ===== -->
+<div style="
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+align-items:center;
+margin-bottom:15px;
+">
+
 <button type="button"
 onclick="cropImage()"
-style="background:#6366f1; color:white; padding:10px 18px; border:none; border-radius:6px;">
-✂ 자르기 적용
+style="
+background:#6366f1;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+">
+✂ 자르기
 </button>
 
-<br><br>
-
-<!-- 업로드 버튼 -->
 <button type="button"
 onclick="uploadCurrentImage()"
-style="background:#10b981; color:white; padding:10px 18px; border:none; border-radius:6px;">
+style="
+background:#10b981;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+">
 ⬆ 업로드
 </button>
 
-
-<br>
-<div style="margin-bottom:15px;">
-
-<button type="button" onclick="rotateLeft()" style="margin-right:5px;">
-↺ 왼쪽 회전
+<button type="button"
+onclick="rotateLeft()"
+style="
+background:#e5e7eb;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+">
+↺ 회전
 </button>
 
-<button type="button" onclick="rotateRight()" style="margin-right:5px;">
-↻ 오른쪽 회전
+<button type="button"
+onclick="rotateRight()"
+style="
+background:#e5e7eb;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+">
+↻ 회전
 </button>
 
-<button type="button" onclick="zoomIn()" style="margin-right:5px;">
-＋ 확대
-</button>
-
-<button type="button" onclick="zoomOut()" style="margin-right:5px;">
-－ 축소
-</button>
-
-<button type="button" onclick="resetCrop()" style="margin-right:5px;">
+<button type="button"
+onclick="resetCrop()"
+style="
+background:#e5e7eb;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+">
 ⟲ 초기화
 </button>
 
 </div>
 
-<!-- 카테고리 -->
+
+<!-- ===== 이미지 정보 입력 ===== -->
+<div style="
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:15px;
+justify-content:center;
+">
+
 <select name="category"
 style="
-padding:8px;
+padding:10px;
 border-radius:6px;
 border:1px solid #ddd;
-background:white;
-margin-bottom:15px;
+min-width:120px;
 ">
+
 {% for category in categories %}
 <option value="{{ category }}">
 {% if category == "apartment" %}아파트
@@ -277,39 +320,43 @@ margin-bottom:15px;
 {% endif %}
 </option>
 {% endfor %}
+
 </select>
 
 
-<br>
-
-
-<!-- 지역 -->
 <input type="text"
 name="location"
 placeholder="지역 (예: 대구 수성구)"
 style="
-width:100%;
-max-width:400px;
 padding:10px;
 border-radius:6px;
 border:1px solid #ddd;
-margin-bottom:10px;
+flex:1;
+min-width:180px;
 ">
 
-<!-- 브랜드 -->
+
 <input type="text"
 name="brand"
-placeholder="브랜드 (예: LX Z:IN 또는 KCC)"
+placeholder="브랜드 (예: LX Z:IN)"
 style="
-width:100%;
-max-width:400px;
 padding:10px;
 border-radius:6px;
 border:1px solid #ddd;
-margin-bottom:10px;
+flex:1;
+min-width:180px;
 ">
 
-<br>
+</div>
+
+
+<div style="
+font-size:13px;
+color:#64748b;
+margin-bottom:10px;
+">
+💡 마우스 휠로 확대 / 축소 가능
+</div>
 
 <!-- 진행바 -->
 <div id="upload-progress"
@@ -684,22 +731,6 @@ function rotateRight(){
     if(!cropper) return;
 
     cropper.rotate(90);
-
-}
-
-function zoomIn(){
-
-    if(!cropper) return;
-
-    cropper.zoom(0.1);
-
-}
-
-function zoomOut(){
-
-    if(!cropper) return;
-
-    cropper.zoom(-0.1);
 
 }
 
