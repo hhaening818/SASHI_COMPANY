@@ -391,7 +391,9 @@ style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">
 
 {% set img_url = url_for('uploaded_file', category=img[2], filename=img[1]) %}
 
-<div style="
+<div class="image-item"
+data-id="{{ img[0] }}"
+style="
 margin-bottom:20px;
 background:white;
 padding:12px;
@@ -569,6 +571,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <script>
 
@@ -988,6 +991,46 @@ function cancelUpload(){
     }
 
 }
+
+const container =
+document.getElementById("image-container");
+
+new Sortable(container, {
+
+    animation: 150,
+
+    onEnd: function () {
+
+        const items =
+        document.querySelectorAll(".image-item");
+
+        const order = [];
+
+        items.forEach((item, index) => {
+
+            order.push({
+                id: item.dataset.id,
+                position: index
+            });
+
+        });
+
+        // 서버에 저장
+        fetch("/update_image_order", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(order)
+
+        });
+
+    }
+
+});
 </script>
 {% endblock %}
 

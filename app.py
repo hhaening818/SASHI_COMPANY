@@ -91,6 +91,21 @@ def add_created_at_column():
 
 add_created_at_column()
 
+def add_position_column():
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    try:
+        c.execute("ALTER TABLE portfolio ADD COLUMN position INTEGER DEFAULT 0")
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
+add_position_column()
+
 def init_contact_db():
 
     conn = sqlite3.connect(DB_PATH)
@@ -177,7 +192,7 @@ def home():
     c.execute("""
         SELECT filename, category
         FROM portfolio
-        ORDER BY created_at DESC
+        ORDER BY position ASC, created_at DESC
         LIMIT 4
     """)
 
@@ -221,7 +236,7 @@ def home():
     c.execute("""
         SELECT filename, category
         FROM portfolio
-        ORDER BY created_at DESC
+        ORDER BY position ASC, created_at DESC
     """)
 
     rows = c.fetchall()
@@ -284,7 +299,10 @@ def portfolio():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
-    c.execute("SELECT * FROM portfolio ORDER BY id DESC")
+    c.execute("""
+    SELECT * FROM portfolio
+    ORDER BY position ASC, created_at DESC
+    """)
 
     images = c.fetchall()
 
@@ -419,7 +437,10 @@ def admin_panel():
     c = conn.cursor()
 
     # 이미지 목록
-    c.execute("SELECT * FROM portfolio ORDER BY id DESC")
+    c.execute("""
+    SELECT * FROM portfolio
+    ORDER BY position ASC, created_at DESC
+    """)
     images = c.fetchall()
 
     # 총 이미지 수
@@ -700,6 +721,30 @@ def toggle_contact_status(id):
     conn.close()
 
     return redirect("/admin_panel")
+
+@app.route("/update_image_order", methods=["POST"])
+def update_image_order():
+
+    if not session.get("admin"):
+        return jsonify({"status": "error"}), 403
+
+    order = request.get_json()
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    for item in order:
+
+        c.execute("""
+            UPDATE portfolio
+            SET position=?
+            WHERE id=?
+        """, (item["position"], item["id"]))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"status": "ok"})
 
 # Railway 실행
 if __name__ == "__main__":
