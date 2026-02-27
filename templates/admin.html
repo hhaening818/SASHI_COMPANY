@@ -794,7 +794,6 @@ function uploadCurrentImage(){
 function sendToServer(base64){
 
     const formData = new FormData();
-
     formData.append("cropped_image", base64);
 
     const location =
@@ -806,8 +805,7 @@ function sendToServer(base64){
     const categorySelect =
     document.querySelector("select[name='category']");
 
-    const category =
-    categorySelect.value;
+    const category = categorySelect.value;
 
     const type =
     categorySelect.options[categorySelect.selectedIndex].text;
@@ -818,11 +816,30 @@ function sendToServer(base64){
     formData.append("category", category);
     formData.append("description", description);
 
+
+    // ✅ 진행바 시작
+    progress.style.display = "block";
+    percent.style.display = "block";
+    bar.style.width = "30%";
+    percent.innerText = "업로드 중...";
+
+
     fetch("/admin_panel",{
         method:"POST",
         body:formData
     })
     .then(()=>{
+
+        // ✅ 완료 표시
+        bar.style.width = "100%";
+        percent.innerText = "완료";
+
+        setTimeout(()=>{
+            progress.style.display = "none";
+            percent.style.display = "none";
+            bar.style.width = "0%";
+        },500);
+
 
         currentIndex++;
 
