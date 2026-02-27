@@ -817,20 +817,15 @@ function sendToServer(base64){
     formData.append("category", category);
     formData.append("description", description);
 
-
     const xhr = new XMLHttpRequest();
 
     xhr.open("POST", "/admin_panel", true);
 
-
-    // ✅ 진행바 표시 시작
     progress.style.display = "block";
     percent.style.display = "block";
     bar.style.width = "0%";
     percent.innerText = "0%";
 
-
-    // ✅ 진짜 퍼센트 업데이트
     xhr.upload.onprogress = function(e){
 
         if(e.lengthComputable){
@@ -845,44 +840,46 @@ function sendToServer(base64){
 
     };
 
-
-    // ✅ 업로드 완료
     xhr.onload = function(){
 
-    bar.style.width = "100%";
-    percent.innerText = "완료";
+        bar.style.width = "100%";
+        percent.innerText = "완료";
 
-    setTimeout(()=>{
+        setTimeout(()=>{
 
-        bar.style.width = "0%";
-        percent.innerText = "0%";
+            bar.style.width = "0%";
+            percent.innerText = "0%";
 
-        currentIndex++;
+            currentIndex++;
 
-        if(currentIndex < files.length){
+            if(currentIndex < files.length){
 
-            loadImage(currentIndex);
+                loadImage(currentIndex);
 
-        }else{
+            }else{
 
-            progress.style.display = "none";
-            percent.style.display = "none";
+                progress.style.display = "none";
+                percent.style.display = "none";
 
-            alert("모든 이미지 업로드 완료");
+                alert("모든 이미지 업로드 완료");
 
-            files = [];
-            currentIndex = 0;
+                files = [];
+                currentIndex = 0;
 
-            document.getElementById("preview").style.display = "none";
-            document.getElementById("image-counter").style.display = "none";
+                document.getElementById("preview").style.display = "none";
+                document.getElementById("image-counter").style.display = "none";
 
-            location.reload();
+                location.reload();
 
-        }
+            }
 
-    }, 300);
+        }, 300);
 
-};
+    };
+
+    xhr.send(formData);
+
+}
 
 function updateCounter(){
 
