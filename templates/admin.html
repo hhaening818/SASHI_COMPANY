@@ -884,7 +884,7 @@ function sendToServer(base64){
                 "전체 업로드 완료 ✔";
  
                 cancelBtn.style.display = "none";
-                
+
                 setTimeout(()=>{
                     statusText.style.display = "none";
                 },1500);
@@ -896,7 +896,7 @@ function sendToServer(base64){
                 document.getElementById("image-counter").style.display = "none";
 
                 uploading = false;
-
+                xhrCurrent = null;
                 location.reload();
 
             }
@@ -979,6 +979,11 @@ function cancelUpload(){
         if(queueItem)
         queueItem.innerText =
         files[currentIndex].name + " ❌ 취소됨";
+
+        // ✅ 핵심 추가 (완전 초기화)
+        files = [];
+        currentIndex = 0;
+        xhrCurrent = null;
 
     }
 
