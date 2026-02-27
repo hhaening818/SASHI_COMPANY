@@ -244,7 +244,7 @@ font-size:14px;
 </button>
 
 <button type="button"
-onclick="uploadCurrentImage()"
+onclick="uploadCurrentOnly()"
 style="
 background:#10b981;
 color:white;
@@ -254,7 +254,21 @@ border-radius:6px;
 cursor:pointer;
 font-size:14px;
 ">
-⬆ 업로드
+⬆ 현재 사진 업로드
+</button>
+
+<button type="button"
+onclick="uploadAllImages()"
+style="
+background:#2563eb;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+">
+📦 전체 업로드
 </button>
 
 <button type="button"
@@ -775,14 +789,7 @@ function loadImage(index){
             viewMode:1,
             autoCropArea:1,
             ready(){
-
-                // cropper 준비 완료 후 업로드 시작
-                if(uploading){
-                    setTimeout(()=>{
-                        uploadNext();
-                    }, 100);
-                }
-
+                // 아무것도 하지 않음 (자동 업로드 방지)
             }
         });
 
@@ -804,54 +811,6 @@ function uploadCurrentImage(){
     uploading = true;
 
     uploadNext();
-}
-
-function uploadNext(){
-
-    if(currentIndex >= files.length){
-
-        statusText.innerText = "전체 업로드 완료 ✔";
-
-        setTimeout(()=>{
-            window.location.reload();
-        }, 800);
-
-        return;
-    }
-
-    const file = files[currentIndex];
-
-    statusText.innerText =
-    "업로드 중: " +
-    (currentIndex+1) + "/" +
-    files.length +
-    " (" + file.name + ")";
-
-    let base64;
-
-    if(cropper){
-
-        const canvas = cropper.getCroppedCanvas({
-            width:1600,
-            height:900
-        });
-
-        base64 = canvas.toDataURL("image/jpeg", 0.9);
-
-    }else{
-
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            sendToServer(e.target.result);
-        };
-
-        reader.readAsDataURL(file);
-
-        return;
-    }
-
-    sendToServer(base64);
 }
 
 function sendToServer(base64){
@@ -990,6 +949,104 @@ function sendToServer(base64){
 
 }
 
+function uploadSingle(index){
+
+    const file = files[index];
+
+    let base64;
+
+    if(cropper){
+
+        const canvas = cropper.getCroppedCanvas({
+            width:1600,
+            height:900
+        });
+
+        base64 = canvas.toDataURL("image/jpeg", 0.9);
+
+    }else{
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            sendSingleToServer(e.target.result, index);
+        };
+
+        reader.readAsDataURL(file);
+
+        return;
+    }
+
+    sendSingleToServer(base64, index);
+}
+
+function sendSingleToServer(base64, index){
+
+    const formData = new FormData();
+
+    formData.append("cropped_image", base64);
+
+    const location =
+    document.querySelector("input[name='location']").value;
+
+    const brand =
+    document.querySelector("input[name='brand']").value;
+
+    const categorySelect =
+    document.querySelector("select[name='category']");
+
+    const category = categorySelect.value;
+
+    const type =
+    categorySelect.options[categorySelect.selectedIndex].text;
+
+    const description =
+    location + "|" + brand + "|" + type;
+
+    formData.append("category", category);
+    formData.append("description", description);
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/admin_panel", true);
+
+    xhr.onload = function(){
+
+        const queueItem =
+        document.getElementById("queue-"+index);
+
+        if(queueItem)
+            queueItem.innerText =
+            files[index].name + " ✅ 완료";
+
+        if(uploading){
+
+            currentIndex++;
+
+            if(currentIndex < files.length){
+
+                loadImage(currentIndex);
+
+                // ⭐ 핵심: 다음 이미지 자동 업로드
+                setTimeout(()=>{
+                    uploadSingle(currentIndex);
+                }, 300);
+
+            }else{
+
+                alert("전체 업로드 완료");
+                location.reload();
+
+            }
+
+        }
+
+    };
+
+    xhr.send(formData);
+
+}
+
 function updateCounter(){
 
     const counter =
@@ -1098,6 +1155,32 @@ new Sortable(container, {
     }
 
 });
+
+function uploadCurrentOnly(){
+
+    if(files.length === 0){
+        alert("이미지를 선택하세요.");
+        return;
+    }
+
+    uploading = false;
+
+    uploadSingle(currentIndex);
+}
+
+
+function uploadAllImages(){
+
+    if(files.length === 0){
+        alert("이미지를 선택하세요.");
+        return;
+    }
+
+    uploading = true;
+    currentIndex = 0;
+
+    uploadSingle(currentIndex);
+}
 </script>
 {% endblock %}
 
