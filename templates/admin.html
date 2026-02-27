@@ -794,6 +794,7 @@ function uploadCurrentImage(){
 function sendToServer(base64){
 
     const formData = new FormData();
+
     formData.append("cropped_image", base64);
 
     const location =
@@ -817,20 +818,37 @@ function sendToServer(base64){
     formData.append("description", description);
 
 
-    // ✅ 진행바 시작
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/admin_panel", true);
+
+
+    // ✅ 진행바 표시 시작
     progress.style.display = "block";
     percent.style.display = "block";
-    bar.style.width = "30%";
-    percent.innerText = "업로드 중...";
+    bar.style.width = "0%";
+    percent.innerText = "0%";
 
 
-    fetch("/admin_panel",{
-        method:"POST",
-        body:formData
-    })
-    .then(()=>{
+    // ✅ 진짜 퍼센트 업데이트
+    xhr.upload.onprogress = function(e){
 
-        // ✅ 완료 표시
+        if(e.lengthComputable){
+
+            const percentValue =
+            Math.round((e.loaded / e.total) * 100);
+
+            bar.style.width = percentValue + "%";
+            percent.innerText = percentValue + "%";
+
+        }
+
+    };
+
+
+    // ✅ 업로드 완료
+    xhr.onload = function(){
+
         bar.style.width = "100%";
         percent.innerText = "완료";
 
@@ -861,7 +879,10 @@ function sendToServer(base64){
 
         }
 
-    });
+    };
+
+
+    xhr.send(formData);
 
 }
 
