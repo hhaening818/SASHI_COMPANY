@@ -28,7 +28,7 @@ id="slide-container">
 
 {% for img in construction_images %}
 
-<div class="slide-card">
+<div class="box-slide-card">
 
 <img src="{{ url_for('uploaded_file',
 category=img.category,
@@ -47,6 +47,7 @@ onclick="moveSlide(1)">›</button>
 
 </section>
 
+
 <script>
 
 let index = 0;
@@ -56,10 +57,17 @@ function moveSlide(dir){
 const container =
 document.getElementById("slide-container");
 
-const total =
-document.querySelectorAll(".slide-card").length;
+const cards =
+document.querySelectorAll(".box-slide-card");
 
-const visible = 3;
+const total = cards.length;
+
+let visible = 3;
+
+// 모바일 대응
+if(window.innerWidth <= 768){
+visible = 1;
+}
 
 index += dir;
 
@@ -69,8 +77,14 @@ index = 0;
 if(index > total - visible)
 index = total - visible;
 
+if(index < 0)
+index = 0;
+
+const cardWidth =
+cards[0].offsetWidth + 20;
+
 container.style.transform =
-"translateX(-" + (index * 33.333) + "%)";
+"translateX(-" + (index * cardWidth) + "px)";
 
 }
 
