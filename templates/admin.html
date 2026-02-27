@@ -215,8 +215,6 @@ border-radius:8px;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 ">
 
-<input type="hidden" name="cropped_image" id="cropped_image">
-
 </div>
 
 
@@ -344,6 +342,17 @@ margin-top:5px;
 display:none;
 ">
 0%
+</div>
+
+<div id="upload-status"
+style="
+margin-top:10px;
+font-size:14px;
+color:#374151;
+display:none;
+font-weight:bold;
+">
+대기중
 </div>
 
 </form>
@@ -542,9 +551,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
 let cropper;
 let files = [];
 let currentIndex = 0;
+let uploading = false;
 
 const dropArea = document.getElementById("drop-area");
 const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
 
 
 // 클릭 업로드
@@ -571,8 +582,6 @@ dropArea.addEventListener("drop", (e) => {
 
     files = Array.from(e.dataTransfer.files);
 
-    fileInput.files = e.dataTransfer.files;
-
     if(files.length > 0){
         currentIndex = 0;
         loadImage(currentIndex);
@@ -592,57 +601,12 @@ fileInput.addEventListener("change", function(e){
 
 });
 
-
-// 미리보기 + cropper
-function showPreview(file){
-
-    const reader = new FileReader();
-
-    reader.onload = function(e){
-
-        const img = document.getElementById("preview");
-
-        img.src = e.target.result;
-        img.style.display = "block";
-
-        if(cropper){
-            cropper.destroy();
-        }
-
-        cropper = new Cropper(img,{
-            aspectRatio:16/9,
-            viewMode:1,
-            autoCropArea:1
-        });
-
-    };
-
-    reader.readAsDataURL(file);
-
-}
-
 // 업로드 처리
-const uploadForm = document.getElementById("uploadForm");
 
 const progress = document.getElementById("upload-progress");
 const bar = document.getElementById("upload-bar");
 const percent = document.getElementById("upload-percent");
-
-
-uploadForm.addEventListener("submit", function(e){
-
-    e.preventDefault();
-
-    if(files.length === 0){
-        alert("이미지를 선택하세요.");
-        return;
-    }
-
-    currentIndex = 0;
-
-    uploadCurrentImage();
-
-});
+const statusText = document.getElementById("upload-status");
 
 
 function cropImage(){
@@ -656,8 +620,6 @@ function cropImage(){
         width:1600,
         height:900
     });
-
-    const preview = document.getElementById("preview");
 
     preview.src = canvas.toDataURL("image/jpeg", 0.9);
 
@@ -751,15 +713,18 @@ function loadImage(index){
 
 function uploadCurrentImage(){
 
+    if(uploading) return;   // ✅ 추가
+
     if(files.length === 0){
         alert("이미지를 선택하세요.");
         return;
     }
 
     if(currentIndex >= files.length){
-        alert("모든 이미지 업로드 완료");
         return;
     }
+
+    uploading = true;  // ✅ 추가
 
     let base64;
 
@@ -823,8 +788,16 @@ function sendToServer(base64){
 
     progress.style.display = "block";
     percent.style.display = "block";
+    statusText.style.display = "block";
+
     bar.style.width = "0%";
     percent.innerText = "0%";
+
+    statusText.innerText =
+    "업로드 중: " +
+    (currentIndex+1) + "/" +
+    files.length +
+    " (" + files[currentIndex].name + ")";
 
     xhr.upload.onprogress = function(e){
 
@@ -844,6 +817,9 @@ function sendToServer(base64){
 
         bar.style.width = "100%";
         percent.innerText = "완료";
+        
+        statusText.innerText =
+        files[currentIndex].name + " ✔ 완료";
 
         setTimeout(()=>{
 
@@ -854,6 +830,7 @@ function sendToServer(base64){
 
             if(currentIndex < files.length){
 
+                uploading = false;
                 loadImage(currentIndex);
 
             }else{
@@ -861,13 +838,20 @@ function sendToServer(base64){
                 progress.style.display = "none";
                 percent.style.display = "none";
 
-                alert("모든 이미지 업로드 완료");
+                statusText.innerText =
+                "전체 업로드 완료 ✔";
+
+                setTimeout(()=>{
+                    statusText.style.display = "none";
+                },1500);
 
                 files = [];
                 currentIndex = 0;
 
                 document.getElementById("preview").style.display = "none";
                 document.getElementById("image-counter").style.display = "none";
+
+                uploading = false;
 
                 location.reload();
 
