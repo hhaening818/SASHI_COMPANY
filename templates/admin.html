@@ -309,6 +309,14 @@ cursor:pointer;
 ⟲ 초기화
 </button>
 
+<button type="button" onclick="prevImage()" style="padding:8px 12px;">
+◀ 이전
+</button>
+
+<button type="button" onclick="nextImage()" style="padding:8px 12px;">
+다음 ▶
+</button>
+
 </div>
 
 
@@ -799,156 +807,6 @@ function loadImage(index){
 
 }
 
-function uploadCurrentImage(){
-
-    if(files.length === 0){
-        alert("이미지를 선택하세요.");
-        return;
-    }
-
-    currentIndex = 0;
-
-    uploading = true;
-
-    uploadNext();
-}
-
-function sendToServer(base64){
-
-    const formData = new FormData();
-
-    formData.append("cropped_image", base64);
-
-    const location =
-    document.querySelector("input[name='location']").value;
-
-    const brand =
-    document.querySelector("input[name='brand']").value;
-
-    const categorySelect =
-    document.querySelector("select[name='category']");
-
-    const category = categorySelect.value;
-
-    const type =
-    categorySelect.options[categorySelect.selectedIndex].text;
-
-    const description =
-    location + "|" + brand + "|" + type;
-
-    formData.append("category", category);
-    formData.append("description", description);
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.open("POST", "/admin_panel", true);
-
-    progress.style.display = "block";
-    percent.style.display = "block";
-    statusText.style.display = "block";
-
-    bar.style.width = "0%";
-    percent.innerText = "0%";
-
-    statusText.innerText =
-    "업로드 중: " +
-    (currentIndex+1) + "/" +
-    files.length +
-    " (" + files[currentIndex].name + ")";
-
-    xhr.upload.onprogress = function(e){
-
-        if(e.lengthComputable){
-
-            const percentValue =
-            Math.round((e.loaded / e.total) * 100);
-
-            bar.style.width = percentValue + "%";
-            percent.innerText = percentValue + "%";
-
-        }
-
-    };
-
-    xhr.onload = function(){
-
-        const queueItem =
-        document.getElementById("queue-"+currentIndex);
-
-        if(queueItem)
-        queueItem.innerText =
-        files[currentIndex].name + " ✅ 완료";
-
-        bar.style.width = "100%";
-        percent.innerText = "완료";
-        
-        statusText.innerText =
-        files[currentIndex].name + " ✔ 완료";
-
-        setTimeout(()=>{
-
-            bar.style.width = "0%";
-            percent.innerText = "0%";
-
-            currentIndex++;
-
-            if(currentIndex < files.length){
-
-                loadImage(currentIndex);
-
-                // ⭐ 이 줄 추가
-                setTimeout(()=>{
-                    uploadNext();
-                }, 150);
-
-            }else{
-
-                progress.style.display = "none";
-                percent.style.display = "none";
-
-                statusText.innerText =
-                "전체 업로드 완료 ✔";
- 
-                cancelBtn.style.display = "none";
-
-                setTimeout(()=>{
-                    statusText.style.display = "none";
-                },1500);
-
-                files = [];
-                currentIndex = 0;
-
-                document.getElementById("preview").style.display = "none";
-                document.getElementById("image-counter").style.display = "none";
-
-                uploading = false;
-                xhrCurrent = null;
-
-                setTimeout(()=>{
-                    window.location.reload();
-                }, 800);
-
-            }
-
-        }, 300);
-
-    };
-
-    xhr.send(formData);
-
-    xhrCurrent = xhr;
-
-    cancelBtn.style.display = "inline-block";
-
-    let queueItem =
-    document.getElementById("queue-"+currentIndex);
-
-    if(queueItem)
-    queueItem.innerText =
-    files[currentIndex].name + " 🔄 업로드중";
-
-}
-
 function uploadSingle(index){
 
     const file = files[index];
@@ -1008,6 +866,9 @@ function sendSingleToServer(base64, index){
 
     const xhr = new XMLHttpRequest();
 
+    xhrCurrent = xhr;
+    cancelBtn.style.display = "inline-block";
+
     xhr.open("POST", "/admin_panel", true);
 
     xhr.onload = function(){
@@ -1019,6 +880,10 @@ function sendSingleToServer(base64, index){
             queueItem.innerText =
             files[index].name + " ✅ 완료";
 
+        statusText.style.display = "block";
+        statusText.innerText =
+        files[index].name + " ✔ 업로드 완료";
+
         if(uploading){
 
             currentIndex++;
@@ -1027,15 +892,28 @@ function sendSingleToServer(base64, index){
 
                 loadImage(currentIndex);
 
-                // ⭐ 핵심: 다음 이미지 자동 업로드
                 setTimeout(()=>{
                     uploadSingle(currentIndex);
                 }, 300);
 
             }else{
 
+                statusText.innerText =
+                "전체 업로드 완료 ✔";
+
                 alert("전체 업로드 완료");
+                
                 location.reload();
+
+            }
+
+        }else{
+
+            // ⭐ 현재사진 업로드 시 다음사진 자동 표시만
+            if(currentIndex < files.length - 1){
+
+                currentIndex++;
+                loadImage(currentIndex);
 
             }
 
@@ -1180,6 +1058,33 @@ function uploadAllImages(){
     currentIndex = 0;
 
     uploadSingle(currentIndex);
+}
+
+
+function prevImage(){
+
+    if(files.length === 0) return;
+
+    if(currentIndex > 0){
+
+        currentIndex--;
+        loadImage(currentIndex);
+
+    }
+
+}
+
+function nextImage(){
+
+    if(files.length === 0) return;
+
+    if(currentIndex < files.length - 1){
+
+        currentIndex++;
+        loadImage(currentIndex);
+
+    }
+
 }
 </script>
 {% endblock %}
