@@ -355,6 +355,30 @@ font-weight:bold;
 대기중
 </div>
 
+<div id="upload-queue"
+style="
+margin-top:15px;
+max-width:400px;
+font-size:13px;
+">
+</div>
+
+<button type="button"
+onclick="cancelUpload()"
+style="
+margin-top:10px;
+background:#ef4444;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+display:none;
+"
+id="cancel-btn">
+업로드 취소
+</button>
+
 </form>
 
 </div>
@@ -552,7 +576,10 @@ let cropper;
 let files = [];
 let currentIndex = 0;
 let uploading = false;
+let xhrCurrent = null;
 
+const queueBox = document.getElementById("upload-queue");
+const cancelBtn = document.getElementById("cancel-btn");
 const dropArea = document.getElementById("drop-area");
 const fileInput = document.getElementById("fileInput");
 const preview = document.getElementById("preview");
@@ -587,6 +614,8 @@ dropArea.addEventListener("drop", (e) => {
         loadImage(currentIndex);
     }
 
+    showQueue();
+
 });
 
 // 파일 선택
@@ -598,6 +627,8 @@ fileInput.addEventListener("change", function(e){
         currentIndex = 0;
         loadImage(currentIndex);
     }
+
+    showQueue();
 
 });
 
@@ -815,6 +846,13 @@ function sendToServer(base64){
 
     xhr.onload = function(){
 
+        const queueItem =
+        document.getElementById("queue-"+currentIndex);
+
+        if(queueItem)
+        queueItem.innerText =
+        files[currentIndex].name + " ✅ 완료";
+
         bar.style.width = "100%";
         percent.innerText = "완료";
         
@@ -832,6 +870,10 @@ function sendToServer(base64){
 
                 uploading = false;
                 loadImage(currentIndex);
+
+                setTimeout(()=>{
+                    uploadCurrentImage();
+                }, 200);
 
             }else{
 
@@ -863,6 +905,17 @@ function sendToServer(base64){
 
     xhr.send(formData);
 
+    xhrCurrent = xhr;
+
+    cancelBtn.style.display = "inline-block";
+
+    let queueItem =
+    document.getElementById("queue-"+currentIndex);
+
+    if(queueItem)
+    queueItem.innerText =
+    files[currentIndex].name + " 🔄 업로드중";
+
 }
 
 function updateCounter(){
@@ -880,6 +933,50 @@ function updateCounter(){
     }else{
 
         counter.style.display = "none";
+
+    }
+
+}
+
+function showQueue(){
+
+    queueBox.innerHTML = "";
+
+    files.forEach((file,index)=>{
+
+        const div = document.createElement("div");
+
+        div.id = "queue-"+index;
+
+        div.style.padding = "4px";
+
+        div.innerText =
+        file.name + " ⏳ 대기중";
+
+        queueBox.appendChild(div);
+
+    });
+
+}
+
+function cancelUpload(){
+
+    if(xhrCurrent){
+
+        xhrCurrent.abort();
+
+        uploading = false;
+
+        cancelBtn.style.display = "none";
+
+        statusText.innerText = "업로드 취소됨";
+
+        let queueItem =
+        document.getElementById("queue-"+currentIndex);
+
+        if(queueItem)
+        queueItem.innerText =
+        files[currentIndex].name + " ❌ 취소됨";
 
     }
 
