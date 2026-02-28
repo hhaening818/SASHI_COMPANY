@@ -901,6 +901,10 @@ function sendSingleToServer(base64, index){
                 statusText.innerText =
                 "전체 업로드 완료 ✔";
 
+                cancelBtn.style.display = "none";
+                xhrCurrent = null;
+                uploading = false;
+
                 alert("전체 업로드 완료");
                 
                 location.reload();
@@ -989,6 +993,14 @@ function cancelUpload(){
         files = [];
         currentIndex = 0;
         xhrCurrent = null;
+
+        preview.style.display = "none";
+        document.getElementById("image-counter").style.display = "none";
+
+        statusText.innerText = "업로드 취소됨";
+        setTimeout(()=>{
+            statusText.style.display = "none";
+        }, 1500);
 
     }
 
