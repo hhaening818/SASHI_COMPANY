@@ -483,7 +483,7 @@ def admin_panel():
         SELECT id, filename, category, created_at
         FROM portfolio
         ORDER BY created_at DESC
-        LIMIT 5
+        LIMIT 10
     """)
     recent_images = c.fetchall()
     
