@@ -742,8 +742,26 @@ padding:60px 15px;
 
 .admin-grid{
 display:grid;
-grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+grid-template-columns: repeat(4, 1fr);
 gap:14px;
+}
+
+@media (max-width:1000px){
+.admin-grid{
+grid-template-columns: repeat(3, 1fr);
+}
+}
+
+@media (max-width:700px){
+.admin-grid{
+grid-template-columns: repeat(2, 1fr);
+}
+}
+
+@media (max-width:500px){
+.admin-grid{
+grid-template-columns: repeat(1, 1fr);
+}
 }
 
 .admin-card{
