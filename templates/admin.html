@@ -727,8 +727,9 @@ function cropImage(){
     }
 
     const canvas = cropper.getCroppedCanvas({
-        width:1600,
-        height:900
+        maxWidth:1600,
+        maxHeight:900,
+        imageSmoothingQuality:"high"
     });
 
     preview.src = canvas.toDataURL("image/jpeg", 0.6);
@@ -844,7 +845,7 @@ function uploadSingle(index){
             return;
         }
 
-        const base64 = canvas.toDataURL("image/jpeg", 0.9);
+        const base64 = canvas.toDataURL("image/jpeg", 0.7);
 
         sendSingleToServer(base64, index);
 
