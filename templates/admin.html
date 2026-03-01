@@ -213,7 +213,17 @@ display:none;
 1 / 1
 </div>
 
-<img id="preview">
+<img id="preview"
+style="
+max-width:400px;
+max-height:225px;
+width:100%;
+height:auto;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.15);
+display:block;
+margin:auto;
+">
 
 <!-- ===== 편집 버튼 그룹 ===== -->
 <div style="
@@ -692,7 +702,9 @@ function loadImage(index){
         img.style.display = "block";
         img.style.maxWidth = "400px";
         img.style.maxHeight = "225px";
-
+        img.style.width = "100%";
+        img.style.height = "auto";
+        
         // 카운터 업데이트
         updateCounter();
 
