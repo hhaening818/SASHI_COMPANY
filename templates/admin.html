@@ -798,7 +798,15 @@ function loadImage(index){
             viewMode:1,
             autoCropArea:1,
             ready(){
-                // 아무것도 하지 않음 (자동 업로드 방지)
+
+                if(uploading){
+                    uploadLock = false;
+
+                    setTimeout(()=>{
+                        uploadSingle(currentIndex);
+                    }, 100);
+                
+                }
             }
         });
 
@@ -820,13 +828,21 @@ function uploadSingle(index){
 
     uploadLock = true;
 
-    // ⭐ 현재 preview를 canvas로 변환해서 업로드
+    // ⭐ cropper 준비 확인
     if(cropper){
 
         const canvas = cropper.getCroppedCanvas({
             width:1600,
             height:900
         });
+
+        if(!canvas){
+            uploadLock = false;
+            setTimeout(()=>{
+                uploadSingle(index);
+            }, 200);
+            return;
+        }
 
         const base64 = canvas.toDataURL("image/jpeg", 0.9);
 
@@ -839,13 +855,10 @@ function uploadSingle(index){
         const reader = new FileReader();
 
         reader.onload = function(e){
-
             sendSingleToServer(e.target.result, index);
-
         };
 
         reader.readAsDataURL(file);
-
     }
 }
 
@@ -904,10 +917,6 @@ function sendSingleToServer(base64, index){
             if(currentIndex < files.length){
 
                 loadImage(currentIndex);
-
-                setTimeout(()=>{
-                    uploadSingle(currentIndex);
-                }, 300);
 
             }else{
 
@@ -1094,9 +1103,6 @@ function uploadAllImages(){
 
     loadImage(currentIndex); // ⭐ 중요
 
-    setTimeout(()=>{
-        uploadSingle(currentIndex);
-    }, 200);
 }
 
 
