@@ -402,8 +402,24 @@ def admin_panel():
 
             header, data = cropped.split(",")
 
-            filename = f"crop_{int(time.time())}_{random.randint(1000,9999)}.jpg"
+            filename = f"crop_{int(time.time()*1000)}_{random.randint(100000,999999)}.jpg"
 
+            # ⭐ 먼저 DB 저장
+            conn = sqlite3.connect(DB_PATH)
+            c = conn.cursor()
+
+            kst_time = get_kst_time()
+
+            c.execute("""
+            INSERT INTO portfolio
+            (filename, category, description, created_at)
+            VALUES (?, ?, ?, ?)
+            """, (filename, category, description, kst_time))
+
+            conn.commit()
+            conn.close()
+
+            # ⭐ 그 다음 파일 저장
             save_path = os.path.join(
                 app.config["UPLOAD_FOLDER"],
                 category,
@@ -412,23 +428,6 @@ def admin_panel():
 
             with open(save_path, "wb") as f:
                 f.write(base64.b64decode(data))
-
-            conn = sqlite3.connect(DB_PATH)
-            c = conn.cursor()
-
-            kst_time = get_kst_time()
-
-            c.execute(
-                """
-                INSERT INTO portfolio
-                (filename, category, description, created_at)
-                VALUES (?, ?, ?, ?)
-                """,
-                (filename, category, description, kst_time)
-            )
-
-            conn.commit()
-            conn.close()
 
     # ======================
     # 통계 + 목록 조회

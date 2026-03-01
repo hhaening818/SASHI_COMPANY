@@ -654,6 +654,7 @@ let cropper;
 let files = [];
 let currentIndex = 0;
 let uploading = false;
+let uploadLock = false;
 let xhrCurrent = null;
 
 const queueBox = document.getElementById("upload-queue");
@@ -809,33 +810,22 @@ function loadImage(index){
 
 function uploadSingle(index){
 
-    const file = files[index];
+    if(uploadLock) return;
+    uploadLock = true;
 
-    let base64;
+    const img =
+    document.getElementById("preview");
 
-    if(cropper){
+    if(!img.src){
 
-        const canvas = cropper.getCroppedCanvas({
-            width:1600,
-            height:900
-        });
+        uploadLock = false;
 
-        base64 = canvas.toDataURL("image/jpeg", 0.9);
-
-    }else{
-
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            sendSingleToServer(e.target.result, index);
-        };
-
-        reader.readAsDataURL(file);
+        alert("이미지를 먼저 선택하세요.");
 
         return;
     }
 
-    sendSingleToServer(base64, index);
+    sendSingleToServer(img.src, index);
 }
 
 function sendSingleToServer(base64, index){
@@ -873,6 +863,7 @@ function sendSingleToServer(base64, index){
 
     xhr.onload = function(){
 
+        uploadLock = false;
         const queueItem =
         document.getElementById("queue-"+index);
 
