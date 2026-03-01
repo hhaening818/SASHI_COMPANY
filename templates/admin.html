@@ -864,6 +864,7 @@ function sendSingleToServer(base64, index){
     xhr.onload = function(){
 
         uploadLock = false;
+
         const queueItem =
         document.getElementById("queue-"+index);
 
@@ -914,6 +915,15 @@ function sendSingleToServer(base64, index){
 
         }
 
+    };
+
+    xhr.onerror = function(){
+
+    uploadLock = false;
+    uploading = false;
+    xhrCurrent = null;
+
+    alert("업로드 오류 발생");
     };
 
     xhr.send(formData);
@@ -1058,6 +1068,9 @@ function uploadAllImages(){
     }
 
     uploading = true;
+
+    uploadLock = false; 
+
     currentIndex = 0;
 
     uploadSingle(currentIndex);
