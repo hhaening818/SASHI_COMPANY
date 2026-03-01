@@ -811,21 +811,26 @@ function loadImage(index){
 function uploadSingle(index){
 
     if(uploadLock) return;
-    uploadLock = true;
 
-    const img =
-    document.getElementById("preview");
-
-    if(!img.src){
-
+    if(index >= files.length){
         uploadLock = false;
-
-        alert("이미지를 먼저 선택하세요.");
-
+        uploading = false;
         return;
     }
 
-    sendSingleToServer(img.src, index);
+    uploadLock = true;
+
+    const file = files[index];
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        sendSingleToServer(e.target.result, index);
+
+    };
+
+    reader.readAsDataURL(file);
 }
 
 function sendSingleToServer(base64, index){
