@@ -868,3 +868,12 @@ margin:auto;
 width:100%;
 max-width:240px;
 }
+
+#preview{
+display:block;
+max-width:300px !important;
+max-height:200px !important;
+width:auto !important;
+height:auto !important;
+margin:auto;
+}
