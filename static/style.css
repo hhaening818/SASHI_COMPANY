@@ -743,7 +743,7 @@ padding:60px 15px;
 .admin-grid{
 display:grid;
 grid-template-columns: repeat(4, 1fr);
-gap:14px;
+gap:12px;
 }
 
 @media (max-width:1000px){
@@ -779,7 +779,7 @@ box-shadow:0 6px 14px rgba(0,0,0,0.12);
 
 .admin-img-wrap{
 position:relative;
-height:120px;
+height:100px;
 overflow:hidden;
 }
 
@@ -828,8 +828,9 @@ cursor:pointer;
 }
 
 .admin-info{
-padding:8px;
-display:none;
+padding:6px;
+display:block;
+font-size:12px;
 }
 
 .admin-info input{
