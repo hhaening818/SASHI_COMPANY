@@ -742,8 +742,9 @@ padding:60px 15px;
 
 .admin-grid{
 display:grid;
-grid-template-columns: repeat(4, 1fr);
+grid-template-columns: repeat(4, 240px);
 gap:12px;
+justify-content:center;
 }
 
 @media (max-width:1000px){
@@ -856,4 +857,14 @@ cursor:pointer;
 font-size:12px;
 color:#666;
 margin-bottom:6px;
+}
+
+#image-container{
+max-width:1000px;
+margin:auto;
+}
+
+.admin-card{
+width:100%;
+max-width:240px;
 }
