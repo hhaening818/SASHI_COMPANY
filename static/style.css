@@ -877,3 +877,26 @@ width:auto !important;
 height:auto !important;
 margin:auto;
 }
+
+/* 업로드 미리보기 이미지 크기 제한 */
+#preview{
+width:400px;
+max-width:100%;
+height:auto;
+max-height:250px;
+object-fit:contain;
+display:block;
+margin:auto;
+border-radius:8px;
+}
+
+.cropper-container{
+max-width:400px !important;
+max-height:250px !important;
+margin:auto;
+}
+
+.cropper-container img{
+max-width:100% !important;
+height:auto !important;
+}
