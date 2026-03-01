@@ -404,7 +404,17 @@ def admin_panel():
 
             filename = f"crop_{int(time.time()*1000)}_{random.randint(100000,999999)}.jpg"
 
-            # ⭐ 먼저 DB 저장
+            # ⭐ 파일 먼저 저장
+            save_path = os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                category,
+                filename
+            )
+
+            with open(save_path, "wb") as f:
+                f.write(base64.b64decode(data))
+
+            # ⭐ 그 다음 DB 저장
             conn = sqlite3.connect(DB_PATH)
             c = conn.cursor()
 
@@ -418,16 +428,6 @@ def admin_panel():
 
             conn.commit()
             conn.close()
-
-            # ⭐ 그 다음 파일 저장
-            save_path = os.path.join(
-                app.config["UPLOAD_FOLDER"],
-                category,
-                filename
-            )
-
-            with open(save_path, "wb") as f:
-                f.write(base64.b64decode(data))
 
     # ======================
     # 통계 + 목록 조회

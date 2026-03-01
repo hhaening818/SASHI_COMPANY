@@ -820,17 +820,33 @@ function uploadSingle(index){
 
     uploadLock = true;
 
-    const file = files[index];
+    // ⭐ 현재 preview를 canvas로 변환해서 업로드
+    if(cropper){
 
-    const reader = new FileReader();
+        const canvas = cropper.getCroppedCanvas({
+            width:1600,
+            height:900
+        });
 
-    reader.onload = function(e){
+        const base64 = canvas.toDataURL("image/jpeg", 0.9);
 
-        sendSingleToServer(e.target.result, index);
+        sendSingleToServer(base64, index);
 
-    };
+    }else{
 
-    reader.readAsDataURL(file);
+        const file = files[index];
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            sendSingleToServer(e.target.result, index);
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
 }
 
 function sendSingleToServer(base64, index){
@@ -1073,12 +1089,14 @@ function uploadAllImages(){
     }
 
     uploading = true;
-
-    uploadLock = false; 
-
+    uploadLock = false;
     currentIndex = 0;
 
-    uploadSingle(currentIndex);
+    loadImage(currentIndex); // ⭐ 중요
+
+    setTimeout(()=>{
+        uploadSingle(currentIndex);
+    }, 200);
 }
 
 
