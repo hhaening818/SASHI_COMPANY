@@ -897,6 +897,18 @@ function sendSingleToServer(base64, index){
 
     xhr.onload = function(){
 
+        // ⭐ 서버 응답 확인 (핵심 추가)
+        if(xhr.status !== 200){
+
+            alert("업로드 실패");
+
+            uploadLock = false;
+            uploading = false;
+            xhrCurrent = null;
+
+            return;
+        }
+
         uploadLock = false;
 
         const queueItem =

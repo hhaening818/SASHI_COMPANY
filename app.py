@@ -429,6 +429,8 @@ def admin_panel():
             conn.commit()
             conn.close()
 
+            return jsonify({"status": "ok"})  # ⭐ 반드시 추가
+
     # ======================
     # 통계 + 목록 조회
     # ======================
