@@ -411,8 +411,15 @@ def admin_panel():
                 filename
             )
 
-            with open(save_path, "wb") as f:
-                f.write(base64.b64decode(data))
+            import base64
+
+            try:
+                with open(save_path, "wb") as f:
+                    f.write(base64.b64decode(data))
+
+            except Exception as e:
+                print("업로드 실패:", e)
+                return jsonify({"status":"error"})
 
             # ⭐ 그 다음 DB 저장
             conn = sqlite3.connect(DB_PATH)
